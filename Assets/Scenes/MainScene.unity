@@ -486,7 +486,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &994127513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -779,7 +779,7 @@ RectTransform:
   - {fileID: 282541678}
   - {fileID: 1064399934}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1228,6 +1228,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611507951}
   m_CullTransparentMesh: 0
+--- !u!1 &1613062572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613062573}
+  - component: {fileID: 1613062574}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1613062573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613062572}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1613062574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613062572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db0eee278387897449ffd3f82ce6ead1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  populationText: {fileID: 2024818626}
+  foodText: {fileID: 218494275}
+  DNAText: {fileID: 164177460}
+  powerText: {fileID: 683896649}
 --- !u!1 &1861042604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,16 +1433,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c935b68338014654abda126c5b5da079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationStorage: 1000
-  foodStorage: 50
-  DNAStorage: 15
-  powerStorage: 40
-  populationIncome: 200100
-  foodIncome: 10
-  DNAIncome: 5
-  powerIncome: 5
+  initialPopulationStorage: 2001000
+  initialFoodStorage: 200
+  initialDNAStorage: 10
+  initialPowerStorage: 50
+  initialPopulationIncome: 200100
+  initialFoodIncome: 100
+  initialDNAIncome: 30
+  initialPowerIncome: 30
   populationText: {fileID: 2024818626}
   foodText: {fileID: 218494275}
   DNAText: {fileID: 164177460}
   powerText: {fileID: 683896649}
+  _uiManager: {fileID: 1613062574}
   periodSecond: 1

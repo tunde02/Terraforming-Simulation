@@ -85,7 +85,9 @@ public class GameManager : MonoBehaviour
     {
         foreach (Resource resource in resources)
         {
-            resource.storage += resource.income++;
+            resource.storage += resource.income;
+            resource.income *= 2;
+            resource.UpdateOverviews();
         }
 
         // Update monitoring values

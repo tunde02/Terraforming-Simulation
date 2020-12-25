@@ -12,6 +12,8 @@ public class Resource
     public string name;
     public long storage;
     public long income;
+    public string storageOverview;
+    public string incomeOverview;
 
     public Resource(ResourceID resourceId, string name, long storage, long income)
     {
@@ -19,12 +21,12 @@ public class Resource
         this.name = name;
         this.storage = storage;
         this.income = income;
+
+        UpdateOverviews();
     }
 
-    public override string ToString()
+    public void UpdateOverviews()
     {
-        double storageOverview;
-        double incomeOverview;
         int storageUnit = 0;
         int incomeUnit = 0;
         double storageCompare = 1000;
@@ -42,9 +44,7 @@ public class Resource
             incomeUnit++;
         }
 
-        storageOverview = Math.Floor(storage / (storageCompare / 1000) * 10) * 0.1d;
-        incomeOverview = Math.Floor(income / (incomeCompare / 1000) * 10) * 0.1d;
-
-        return $"{storageOverview}{units[storageUnit]} + {incomeOverview}{units[incomeUnit]}";
+        storageOverview = $"{Math.Floor(storage / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
+        incomeOverview = $"{Math.Floor(income / (incomeCompare / 1000) * 10) * 0.1d}{units[incomeUnit]}";
     }
 }

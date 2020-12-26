@@ -39,14 +39,15 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
 
-    private Resource[] resources;
-
     public UIManager _uiManager;
+    public TurnManager _turnManager;
+    public Button turnStartBtn;
+    public float turnPeriodSecond;
 
-    // need readonly later
-    public float periodSecond;
 
+    private Resource[] resources;
     private float startTime;
+    private bool isTurnStarted;
 
 
     void Start()
@@ -55,19 +56,14 @@ public class GameManager : MonoBehaviour
 
         _uiManager.UpdateResourceTexts(resources);
 
-        // 턴 방식 구현하면 턴 시작될 때 실행
-        startTime = Time.time;
+        isTurnStarted = false;
     }
 
     void Update()
     {
-        if (Time.time - startTime >= periodSecond)
+        if (isTurnStarted && Time.time - startTime >= turnPeriodSecond)
         {
-            UpdateResources();
-            _uiManager.UpdateResourceTexts(resources);
-
-            // 턴 방식 구현하면 지워야됨
-            startTime = Time.time;
+            EndTurn();
         }
     }
 
@@ -99,5 +95,30 @@ public class GameManager : MonoBehaviour
         nowDNAIncome         = resources[2].income;
         nowPowerStorage      = resources[3].storage;
         nowPowerIncome       = resources[3].income;
+    }
+
+    [Button(Name = "Start Turn")]
+    public void StartTurn()
+    {
+        Debug.Log("turn start");
+
+        isTurnStarted = true;
+        turnStartBtn.interactable = false;
+
+        startTime = Time.time;
+
+        _turnManager.StartTurnGauageAnimation();
+    }
+
+    public void EndTurn()
+    {
+        Debug.Log("turn end");
+
+        isTurnStarted = false;
+        turnStartBtn.interactable = true;
+
+        UpdateResources();
+        _uiManager.UpdateResourceTexts(resources);
+        _turnManager.ResetTurnGauge();
     }
 }

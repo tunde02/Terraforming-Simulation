@@ -8,9 +8,14 @@ public class TurnManager : MonoBehaviour
 {
     public RawImage turnGauage;
 
-    public void StartTurnGauageAnimation()
+    public void StartTurnGauageAnimation(float duration)
     {
-        turnGauage.rectTransform.DOScaleX(8890f, 5f).SetEase(Ease.Linear);
+        turnGauage.rectTransform.DOScaleX(8890f, duration).SetEase(Ease.Linear);
+    }
+
+    public void StopTurnGaugeAnimation()
+    {
+        turnGauage.rectTransform.DOPause();
     }
 
     public void ResetTurnGauge()

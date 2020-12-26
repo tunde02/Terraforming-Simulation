@@ -7,9 +7,15 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public ResourceStatusPanel resourceStatusUI;
+    public StartTurnBtn startTurnBtn;
 
     public void UpdateResourceTexts(Resource[] resources)
     {
         resourceStatusUI.UpdateResourceTexts(resources);
+    }
+
+    public void ChangeStartTurnBtnImageTo(string imgType)
+    {
+        startTurnBtn.ChangeBtnImageTo(imgType);
     }
 }

@@ -12,6 +12,13 @@ public enum ResourceID
     Power = 3
 }
 
+public enum TurnStatus
+{
+    Wait,
+    Play,
+    Pause
+}
+
 public class GameManager : MonoBehaviour
 {
     [BoxGroup("Resources")] public long initialPopulationStorage;
@@ -38,16 +45,16 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowDNAIncome;
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
+    [BoxGroup("Monitoring")] public float turnPlayTime;
 
     public UIManager _uiManager;
     public TurnManager _turnManager;
-    public Button turnStartBtn;
     public float turnPeriodSecond;
 
 
+    public TurnStatus turnStatus;
     private Resource[] resources;
-    private float startTime;
-    private bool isTurnStarted;
+    private float prevTime;
 
 
     void Start()
@@ -56,14 +63,26 @@ public class GameManager : MonoBehaviour
 
         _uiManager.UpdateResourceTexts(resources);
 
-        isTurnStarted = false;
+        turnStatus = TurnStatus.Wait;
     }
 
     void Update()
     {
-        if (isTurnStarted && Time.time - startTime >= turnPeriodSecond)
+        switch (turnStatus)
         {
-            EndTurn();
+            case TurnStatus.Wait:
+                break;
+            case TurnStatus.Play:
+                turnPlayTime += Time.time - prevTime;
+                prevTime = Time.time;
+
+                if (turnPlayTime >= turnPeriodSecond)
+                {
+                    FinishTurn();
+                }
+                break;
+            case TurnStatus.Pause:
+                break;
         }
     }
 
@@ -77,48 +96,82 @@ public class GameManager : MonoBehaviour
         resources[(int)ResourceID.Power]      = new Resource(ResourceID.Power, "power", initialPowerStorage, initialPowerIncome);
     }
 
-    private void UpdateResources()
+    private void UpdateResourcesStorage()
     {
         foreach (Resource resource in resources)
         {
             resource.storage += resource.income;
-            resource.income *= 2;
             resource.UpdateOverviews();
         }
 
         // Update monitoring values
         nowPopulationStorage = resources[0].storage;
-        nowPopulationIncome  = resources[0].income;
         nowFoodStorage       = resources[1].storage;
-        nowFoodIncome        = resources[1].income;
         nowDNAStorage        = resources[2].storage;
-        nowDNAIncome         = resources[2].income;
         nowPowerStorage      = resources[3].storage;
-        nowPowerIncome       = resources[3].income;
+    }
+
+    [Button(Name="Update Income")]
+    public void UpdateResourcesIncome()
+    {
+        foreach (Resource resource in resources)
+        {
+            resource.income *= 2;
+            resource.UpdateOverviews();
+        }
+
+        // Update monitoring values
+        nowPopulationIncome = resources[0].income;
+        nowFoodIncome = resources[1].income;
+        nowDNAIncome = resources[2].income;
+        nowPowerIncome = resources[3].income;
     }
 
     [Button(Name = "Start Turn")]
     public void StartTurn()
     {
-        Debug.Log("turn start");
+        Debug.Log("START TURN");
 
-        isTurnStarted = true;
-        turnStartBtn.interactable = false;
+        turnStatus = TurnStatus.Play;
 
-        startTime = Time.time;
+        prevTime = Time.time;
+        turnPlayTime = 0f;
 
-        _turnManager.StartTurnGauageAnimation();
+        _turnManager.StartTurnGauageAnimation(turnPeriodSecond);
     }
 
-    public void EndTurn()
+    public void PauseTurn()
     {
-        Debug.Log("turn end");
+        Debug.Log("PAUSE TURN");
 
-        isTurnStarted = false;
-        turnStartBtn.interactable = true;
+        turnStatus = TurnStatus.Pause;
 
-        UpdateResources();
+        _turnManager.StopTurnGaugeAnimation();
+    }
+
+    public void ResumeTurn()
+    {
+        Debug.Log("RESUME TURN");
+
+        turnStatus = TurnStatus.Play;
+
+        prevTime = Time.time;
+
+        _turnManager.StartTurnGauageAnimation(turnPeriodSecond - turnPlayTime);
+    }
+
+    public void FinishTurn()
+    {
+        Debug.Log("FINISH TURN");
+
+        turnStatus = TurnStatus.Wait;
+
+        turnPlayTime = 0f;
+
+        UpdateResourcesStorage();
+
         _uiManager.UpdateResourceTexts(resources);
+        _uiManager.ChangeStartTurnBtnImageTo("PLAY");
         _turnManager.ResetTurnGauge();
     }
 }

@@ -8,17 +8,41 @@ public class StartTurnBtn : MonoBehaviour
     public Sprite playBtnImage;
     public Sprite pauseBtnImage;
 
-    private bool isTurnInProgress = false;
-
     public void OnClicked(GameManager gameManager)
     {
-        if (!isTurnInProgress)
+        switch (gameManager.turnStatus)
         {
-            isTurnInProgress = true;
+            case TurnStatus.Wait:
+                ChangeBtnImageTo("PAUSE");
+                gameManager.StartTurn();
 
-            gameManager.StartTurn();
+                break;
+            case TurnStatus.Play:
+                ChangeBtnImageTo("PLAY");
+                gameManager.PauseTurn();
 
+                break;
+            case TurnStatus.Pause:
+                ChangeBtnImageTo("PAUSE");
+                gameManager.ResumeTurn();
+
+                break;
+        }
+    }
+
+    public void ChangeBtnImageTo(string imgType)
+    {
+        if (imgType == "PLAY")
+        {
+            GetComponent<Image>().sprite = playBtnImage;
+        }
+        else if (imgType == "PAUSE")
+        {
             GetComponent<Image>().sprite = pauseBtnImage;
+        }
+        else
+        {
+            Debug.LogError("Invalid imageName : StartTurnBtn.cs - ChangeBtnImageTo()");
         }
     }
 }

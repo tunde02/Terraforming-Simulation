@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResourceStatusUI : MonoBehaviour
+public class ResourceStatusPanel : MonoBehaviour
 {
     [BoxGroup("Texts")] public Text populationText;
     [BoxGroup("Texts")] public Text foodText;

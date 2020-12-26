@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public ResourceStatusUI resourceStatusUI;
+    public ResourceStatusPanel resourceStatusUI;
 
     public void UpdateResourceTexts(Resource[] resources)
     {

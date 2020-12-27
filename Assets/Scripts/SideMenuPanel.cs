@@ -2,8 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum MenuStatus
+{
+    Open,
+    Close
+}
+
+
 public abstract class SideMenuPanel : MonoBehaviour
 {
-    public abstract void MoveIntoScreen();
-    public abstract void MoveOutOfScreen();
+    public MenuStatus menuStatus;
+
+    public abstract void OpenSideMenu();
+    public abstract void CloseSideMenu();
 }

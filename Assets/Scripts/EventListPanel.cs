@@ -13,20 +13,26 @@ public class EventListPanel : SideMenuPanel
 
     private void Start()
     {
+        menuStatus = MenuStatus.Close;
+
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public override void MoveIntoScreen()
+    public override void OpenSideMenu()
     {
+        menuStatus = MenuStatus.Open;
+
         rectTransform
             .DOAnchorPosX(inScreenPosX, 0.5f)
             .SetEase(Ease.OutExpo);
     }
 
-    public override void MoveOutOfScreen()
+    public override void CloseSideMenu()
     {
+        menuStatus = MenuStatus.Close;
+
         rectTransform
             .DOAnchorPosX(outScreenPosX, 0.5f)
-            .SetEase(Ease.InExpo);
+            .SetEase(Ease.OutExpo);
     }
 }

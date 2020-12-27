@@ -1,19 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 
-public enum MenuStatus
+public class SideMenuPanel : MonoBehaviour
 {
-    Open,
-    Close
-}
+    public bool IsOpened { get; set; } = false;
 
 
-public abstract class SideMenuPanel : MonoBehaviour
-{
-    public MenuStatus menuStatus;
+    private RectTransform rectTransform;
+    private readonly float inScreenPosX = 150f;
+    private readonly float outScreenPosX = 935f;
 
-    public abstract void OpenSideMenu();
-    public abstract void CloseSideMenu();
+    private void Start()
+    {
+        IsOpened = false;
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void OpenSideMenu()
+    {
+        IsOpened = true;
+
+        rectTransform
+            .DOAnchorPosX(inScreenPosX, 0.5f)
+            .SetEase(Ease.OutExpo);
+    }
+    public void CloseSideMenu()
+    {
+        IsOpened = false;
+
+        rectTransform
+            .DOAnchorPosX(outScreenPosX, 0.5f)
+            .SetEase(Ease.OutExpo);
+    }
 }

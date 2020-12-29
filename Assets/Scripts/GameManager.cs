@@ -4,13 +4,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ResourceID
-{
-    Population = 0,
-    Food = 1,
-    DNA = 2,
-    Power = 3
-}
 
 public enum TurnStatus
 {
@@ -54,16 +47,24 @@ public class GameManager : MonoBehaviour
 
     public TurnStatus turnStatus;
     private Resource[] resources;
+    private Action[] actions;
+    private LinkedList<ActionType> actionBundle;
     private float prevTime;
 
 
-    void Start()
+    private void Awake()
     {
         InitResources();
+        InitActions();
+        actionBundle = new LinkedList<ActionType>();
+        turnStatus = TurnStatus.Wait;
+    }
 
+    void Start()
+    {
         _uiManager.UpdateResourceTexts(resources);
 
-        turnStatus = TurnStatus.Wait;
+        FillTestActions();
     }
 
     void Update()
@@ -90,44 +91,22 @@ public class GameManager : MonoBehaviour
     {
         resources = new Resource[4];
 
-        resources[(int)ResourceID.Population] = new Resource(ResourceID.Population, "population", initialPopulationStorage, initialPopulationIncome);
-        resources[(int)ResourceID.Food]       = new Resource(ResourceID.Food, "food", initialFoodStorage, initialFoodIncome);
-        resources[(int)ResourceID.DNA]        = new Resource(ResourceID.DNA, "DNA", initialDNAStorage, initialDNAIncome);
-        resources[(int)ResourceID.Power]      = new Resource(ResourceID.Power, "power", initialPowerStorage, initialPowerIncome);
+        resources[(int)ResourceType.Population] = new Resource(ResourceType.Population, "population", initialPopulationStorage, initialPopulationIncome);
+        resources[(int)ResourceType.Food]       = new Resource(ResourceType.Food, "food", initialFoodStorage, initialFoodIncome);
+        resources[(int)ResourceType.DNA]        = new Resource(ResourceType.DNA, "DNA", initialDNAStorage, initialDNAIncome);
+        resources[(int)ResourceType.Power]      = new Resource(ResourceType.Power, "power", initialPowerStorage, initialPowerIncome);
     }
 
-    private void UpdateResourcesStorage()
+    private void InitActions()
     {
-        foreach (Resource resource in resources)
-        {
-            resource.storage += resource.income;
-            resource.UpdateOverviews();
-        }
+        actions = new Action[4];
 
-        // Update monitoring values
-        nowPopulationStorage = resources[0].storage;
-        nowFoodStorage       = resources[1].storage;
-        nowDNAStorage        = resources[2].storage;
-        nowPowerStorage      = resources[3].storage;
+        actions[0] = new Action(ActionType.Breed);
+        actions[1] = new Action(ActionType.Hunt);
+        actions[2] = new Action(ActionType.Evolve);
+        actions[3] = new Action(ActionType.Train);
     }
 
-    [Button(Name="Update Income")]
-    public void UpdateResourcesIncome()
-    {
-        foreach (Resource resource in resources)
-        {
-            resource.income *= 2;
-            resource.UpdateOverviews();
-        }
-
-        // Update monitoring values
-        nowPopulationIncome = resources[0].income;
-        nowFoodIncome = resources[1].income;
-        nowDNAIncome = resources[2].income;
-        nowPowerIncome = resources[3].income;
-    }
-
-    [Button(Name = "Start Turn")]
     public void StartTurn()
     {
         Debug.Log("START TURN");
@@ -138,6 +117,8 @@ public class GameManager : MonoBehaviour
         turnPlayTime = 0f;
 
         _turnManager.StartTurnGauageAnimation(turnPeriodSecond);
+
+        StartCoroutine(PerformActionBundle());
     }
 
     public void PauseTurn()
@@ -165,13 +146,39 @@ public class GameManager : MonoBehaviour
         Debug.Log("FINISH TURN");
 
         turnStatus = TurnStatus.Wait;
-
         turnPlayTime = 0f;
 
-        UpdateResourcesStorage();
-
-        _uiManager.UpdateResourceTexts(resources);
         _uiManager.ChangeStartTurnBtnImageTo("PLAY");
         _turnManager.ResetTurnGauge();
+    }
+
+    public IEnumerator PerformActionBundle()
+    {
+        var variations = new List<(ResourceType resourceType, long amount)>();
+
+        foreach (ActionType actionType in actionBundle)
+        {
+            yield return new WaitForSeconds(turnPeriodSecond / actionBundle.Count);
+
+            variations.AddRange(actions[(int)actionType].PerformAction(resources[0], resources[(int)actionType]));
+            _uiManager.UpdateResourceTexts(resources);
+            _uiManager.ShowVariationTexts(variations);
+
+            variations.Clear();
+        }
+    }
+
+    public void FillTestActions()
+    {
+        actionBundle.AddLast(ActionType.Hunt);
+        actionBundle.AddLast(ActionType.Hunt);
+        actionBundle.AddLast(ActionType.Hunt);
+        actionBundle.AddLast(ActionType.Breed);
+        actionBundle.AddLast(ActionType.Breed);
+        actionBundle.AddLast(ActionType.Breed);
+        actionBundle.AddLast(ActionType.Breed);
+        actionBundle.AddLast(ActionType.Evolve);
+        actionBundle.AddLast(ActionType.Evolve);
+        actionBundle.AddLast(ActionType.Hunt);
     }
 }

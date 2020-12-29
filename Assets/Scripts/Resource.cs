@@ -4,47 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+public enum ResourceType
+{
+    Population,
+    Food,
+    DNA,
+    Power
+}
+
 public class Resource
 {
     private readonly string[] units = { "", "a", "b", "c", "d", "e", "f" };
 
-    public ResourceID resourceId;
+    public ResourceType resourceType;
     public string name;
-    public long storage;
-    public long income;
-    public string storageOverview;
-    public string incomeOverview;
+    public long Storage { get; set; }
 
-    public Resource(ResourceID resourceId, string name, long storage, long income)
+    public Resource(ResourceType resourceType, string name, long storage, long income)
     {
-        this.resourceId = resourceId;
+        this.resourceType = resourceType;
         this.name = name;
-        this.storage = storage;
-        this.income = income;
-
-        UpdateOverviews();
+        Storage = storage;
     }
 
-    public void UpdateOverviews()
+    public string GetStorageOverview()
     {
         int storageUnit = 0;
-        int incomeUnit = 0;
         double storageCompare = 1000;
-        double incomeCompare = 1000;
 
-        while (storage >= storageCompare)
+        while (Storage >= storageCompare)
         {
             storageCompare *= 1000;
             storageUnit++;
         }
 
-        while (income >= incomeCompare)
-        {
-            incomeCompare *= 1000;
-            incomeUnit++;
-        }
-
-        storageOverview = $"{Math.Floor(storage / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
-        incomeOverview = $"{Math.Floor(income / (incomeCompare / 1000) * 10) * 0.1d}{units[incomeUnit]}";
+        return $"{Math.Floor(Storage / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
     }
 }

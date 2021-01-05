@@ -166,6 +166,25 @@ public class GameManager : MonoBehaviour
         uiManager.ShowVariationTexts(variations);
     }
 
+    private bool IsPerformable(List<ActionType> _actionBundle)
+    {
+        var expectedResources = resources;
+
+        foreach (var nowAction in _actionBundle)
+        {
+            actions[(int)nowAction].PerformAction(expectedResources[0], expectedResources[(int)nowAction]);
+
+            foreach (var resource in expectedResources)
+            {
+                if (resource.Storage < 0)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    [Button(Name = "Fill Test Actions")]
     public void FillTestActions()
     {
         actionBundle.Add(ActionType.Hunt);
@@ -178,5 +197,11 @@ public class GameManager : MonoBehaviour
         actionBundle.Add(ActionType.Evolve);
         actionBundle.Add(ActionType.Evolve);
         actionBundle.Add(ActionType.Hunt);
+
+        if (!IsPerformable(actionBundle))
+        {
+            Debug.LogError("NOT PERFOMABLE ACTION BUNDLE!!");
+            actionBundle.Clear();
+        }
     }
 }

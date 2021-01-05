@@ -41,8 +41,8 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public float turnPlayTime;
     [BoxGroup("Monitoring")] public int nowActionIndex;
 
-    public UIManager _uiManager;
-    public TurnManager _turnManager;
+    public UIManager uiManager;
+    public TurnManager turnManager;
     public float turnPeriodSecond;
 
 
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _uiManager.UpdateResourceTexts(resources);
+        uiManager.UpdateResourceTexts(resources);
 
         FillTestActions();
     }
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         turnPlayTime = 0f;
         nowActionIndex = 0;
 
-        _turnManager.StartTurnGauageAnimation(turnPeriodSecond);
+        turnManager.StartTurnGauageAnimation(turnPeriodSecond);
     }
 
     public void PauseTurn()
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         turnStatus = TurnStatus.Pause;
 
-        _turnManager.StopTurnGaugeAnimation();
+        turnManager.StopTurnGaugeAnimation();
     }
 
     public void ResumeTurn()
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
 
         prevTime = Time.time;
 
-        _turnManager.StartTurnGauageAnimation(turnPeriodSecond - turnPlayTime);
+        turnManager.StartTurnGauageAnimation(turnPeriodSecond - turnPlayTime);
     }
 
     public void FinishTurn()
@@ -153,8 +153,8 @@ public class GameManager : MonoBehaviour
 
         turnStatus = TurnStatus.Wait;
 
-        _uiManager.ChangeStartTurnBtnImageTo("PLAY");
-        _turnManager.ResetTurnGauge();
+        uiManager.ChangeStartTurnBtnImageTo("PLAY");
+        turnManager.ResetTurnGauge();
     }
 
     public void PerformActionAt(int actionIndex)
@@ -162,8 +162,8 @@ public class GameManager : MonoBehaviour
         var nowAction = actionBundle[actionIndex];
         var variations = actions[(int)nowAction].PerformAction(resources[0], resources[(int)nowAction]);
 
-        _uiManager.UpdateResourceTexts(resources);
-        _uiManager.ShowVariationTexts(variations);
+        uiManager.UpdateResourceTexts(resources);
+        uiManager.ShowVariationTexts(variations);
     }
 
     public void FillTestActions()

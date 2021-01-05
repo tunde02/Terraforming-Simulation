@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
     [BoxGroup("Monitoring")] public float turnPlayTime;
+    [BoxGroup("Monitoring")] public int nowActionIndex;
 
     public UIManager _uiManager;
     public TurnManager _turnManager;
@@ -48,15 +49,15 @@ public class GameManager : MonoBehaviour
     public TurnStatus turnStatus;
     private Resource[] resources;
     private Action[] actions;
-    private LinkedList<ActionType> actionBundle;
+    private List<ActionType> actionBundle;
     private float prevTime;
-
+    
 
     private void Awake()
     {
         InitResources();
         InitActions();
-        actionBundle = new LinkedList<ActionType>();
+        actionBundle = new List<ActionType>();
         turnStatus = TurnStatus.Wait;
     }
 
@@ -77,10 +78,16 @@ public class GameManager : MonoBehaviour
                 turnPlayTime += Time.time - prevTime;
                 prevTime = Time.time;
 
-                if (turnPlayTime >= turnPeriodSecond)
+                if (turnPlayTime >= turnPeriodSecond / actionBundle.Count * (nowActionIndex + 1))
+                {
+                    PerformActionAt(nowActionIndex++);
+                }
+
+                if (nowActionIndex >= actionBundle.Count)
                 {
                     FinishTurn();
                 }
+
                 break;
             case TurnStatus.Pause:
                 break;
@@ -115,10 +122,9 @@ public class GameManager : MonoBehaviour
 
         prevTime = Time.time;
         turnPlayTime = 0f;
+        nowActionIndex = 0;
 
         _turnManager.StartTurnGauageAnimation(turnPeriodSecond);
-
-        StartCoroutine(PerformActionBundle());
     }
 
     public void PauseTurn()
@@ -146,39 +152,31 @@ public class GameManager : MonoBehaviour
         Debug.Log("FINISH TURN");
 
         turnStatus = TurnStatus.Wait;
-        turnPlayTime = 0f;
 
         _uiManager.ChangeStartTurnBtnImageTo("PLAY");
         _turnManager.ResetTurnGauge();
     }
 
-    public IEnumerator PerformActionBundle()
+    public void PerformActionAt(int actionIndex)
     {
-        var variations = new List<(ResourceType resourceType, long amount)>();
+        var nowAction = actionBundle[actionIndex];
+        var variations = actions[(int)nowAction].PerformAction(resources[0], resources[(int)nowAction]);
 
-        foreach (ActionType actionType in actionBundle)
-        {
-            yield return new WaitForSeconds(turnPeriodSecond / actionBundle.Count);
-
-            variations.AddRange(actions[(int)actionType].PerformAction(resources[0], resources[(int)actionType]));
-            _uiManager.UpdateResourceTexts(resources);
-            _uiManager.ShowVariationTexts(variations);
-
-            variations.Clear();
-        }
+        _uiManager.UpdateResourceTexts(resources);
+        _uiManager.ShowVariationTexts(variations);
     }
 
     public void FillTestActions()
     {
-        actionBundle.AddLast(ActionType.Hunt);
-        actionBundle.AddLast(ActionType.Hunt);
-        actionBundle.AddLast(ActionType.Hunt);
-        actionBundle.AddLast(ActionType.Breed);
-        actionBundle.AddLast(ActionType.Breed);
-        actionBundle.AddLast(ActionType.Breed);
-        actionBundle.AddLast(ActionType.Breed);
-        actionBundle.AddLast(ActionType.Evolve);
-        actionBundle.AddLast(ActionType.Evolve);
-        actionBundle.AddLast(ActionType.Hunt);
+        actionBundle.Add(ActionType.Hunt);
+        actionBundle.Add(ActionType.Hunt);
+        actionBundle.Add(ActionType.Hunt);
+        actionBundle.Add(ActionType.Breed);
+        actionBundle.Add(ActionType.Breed);
+        actionBundle.Add(ActionType.Breed);
+        actionBundle.Add(ActionType.Breed);
+        actionBundle.Add(ActionType.Evolve);
+        actionBundle.Add(ActionType.Evolve);
+        actionBundle.Add(ActionType.Hunt);
     }
 }

@@ -10,7 +10,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurnGauageAnimation(float duration)
     {
-        turnGauage.rectTransform.DOScaleX(8890f, duration).SetEase(Ease.Linear);
+        turnGauage.rectTransform.DOScaleX(9300f, duration).SetEase(Ease.Linear);
     }
 
     public void StopTurnGaugeAnimation()

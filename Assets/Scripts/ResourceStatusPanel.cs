@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using DG.Tweening;
@@ -7,6 +8,8 @@ using UnityEngine.UI;
 
 public class ResourceStatusPanel : MonoBehaviour
 {
+    private readonly string[] units = { "", "a", "b", "c", "d", "e", "f" };
+
     [BoxGroup("Texts")] public Text populationText;
     [BoxGroup("Texts")] public Text foodText;
     [BoxGroup("Texts")] public Text DNAText;
@@ -22,10 +25,24 @@ public class ResourceStatusPanel : MonoBehaviour
 
     public void UpdateResourceTexts(Resource[] resources)
     {
-        populationText.text = $"{resources[(int)ResourceType.Population].GetStorageOverview()}";
-        foodText.text       = $"{resources[(int)ResourceType.Food].GetStorageOverview()}";
-        DNAText.text        = $"{resources[(int)ResourceType.DNA].GetStorageOverview()}";
-        powerText.text      = $"{resources[(int)ResourceType.Power].GetStorageOverview()}";
+        populationText.text = $"{GetStorageOverview(resources[(int)ResourceType.Population].Storage)}";
+        foodText.text       = $"{GetStorageOverview(resources[(int)ResourceType.Food].Storage)}";
+        DNAText.text        = $"{GetStorageOverview(resources[(int)ResourceType.DNA].Storage)}";
+        powerText.text      = $"{GetStorageOverview(resources[(int)ResourceType.Power].Storage)}";
+    }
+
+    private string GetStorageOverview(long storage)
+    {
+        int storageUnit = 0;
+        double storageCompare = 1000;
+
+        while (storage >= storageCompare)
+        {
+            storageCompare *= 1000;
+            storageUnit++;
+        }
+
+        return $"{Math.Floor(storage / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
     }
 
     public void ShowVariationTextsAnimation(List<(ResourceType resourceType, long amount)> variations)

@@ -6,18 +6,24 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public ResourceStatusPanel resourceStatusPanel;
     public StartTurnBtn startTurnBtn;
-
+    public ResourceStatusPanel resourceStatusPanel;
+    public ResourceDetailsPanel resourceDetailsPanel;
+    
 
     public void ChangeStartTurnBtnImageTo(string imgType)
     {
         startTurnBtn.ChangeBtnImageTo(imgType);
     }
 
-    public void UpdateResourceTexts(Resource[] resources)
+    public void UpdateResourceStatusTexts(Resource[] resources)
     {
         resourceStatusPanel.UpdateResourceTexts(resources);
+    }
+
+    public void UpdateResourceDetailsTexts(Resource[] resources)
+    {
+        resourceDetailsPanel.UpdateResourceDetailsTexts(resources);
     }
 
     public void ShowVariationTexts(List<(ResourceType resourceType, long amount)> variations)

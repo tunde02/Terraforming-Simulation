@@ -19,11 +19,6 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Resources")] public long initialDNAStorage;
     [BoxGroup("Resources")] public long initialPowerStorage;
 
-    [BoxGroup("Incomes")] public long initialPopulationIncome;
-    [BoxGroup("Incomes")] public long initialFoodIncome;
-    [BoxGroup("Incomes")] public long initialDNAIncome;
-    [BoxGroup("Incomes")] public long initialPowerIncome;
-
     [BoxGroup("Texts")] public Text populationText;
     [BoxGroup("Texts")] public Text foodText;
     [BoxGroup("Texts")] public Text DNAText;
@@ -53,7 +48,7 @@ public class GameManager : MonoBehaviour
     private float prevTime;
     
 
-    private void Awake()
+    void Awake()
     {
         InitResources();
         InitActions();
@@ -63,9 +58,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        uiManager.UpdateResourceTexts(resources);
+        uiManager.UpdateResourceStatusTexts(resources);
+        uiManager.UpdateResourceDetailsTexts(resources);
 
         FillTestActions();
+
+        UpdateMonitorings();
     }
 
     void Update()
@@ -98,10 +96,10 @@ public class GameManager : MonoBehaviour
     {
         resources = new Resource[4];
 
-        resources[(int)ResourceType.Population] = new Resource(ResourceType.Population, "population", initialPopulationStorage, initialPopulationIncome);
-        resources[(int)ResourceType.Food]       = new Resource(ResourceType.Food, "food", initialFoodStorage, initialFoodIncome);
-        resources[(int)ResourceType.DNA]        = new Resource(ResourceType.DNA, "DNA", initialDNAStorage, initialDNAIncome);
-        resources[(int)ResourceType.Power]      = new Resource(ResourceType.Power, "power", initialPowerStorage, initialPowerIncome);
+        resources[(int)ResourceType.Population] = new Resource(ResourceType.Population, initialPopulationStorage);
+        resources[(int)ResourceType.Food] = new Resource(ResourceType.Food, initialFoodStorage);
+        resources[(int)ResourceType.DNA] = new Resource(ResourceType.DNA, initialDNAStorage);
+        resources[(int)ResourceType.Power] = new Resource(ResourceType.Power, initialPowerStorage);
     }
 
     private void InitActions()
@@ -162,23 +160,33 @@ public class GameManager : MonoBehaviour
         var nowAction = actionBundle[actionIndex];
         var variations = actions[(int)nowAction].PerformAction(resources[0], resources[(int)nowAction]);
 
-        uiManager.UpdateResourceTexts(resources);
+        uiManager.UpdateResourceStatusTexts(resources);
+        uiManager.UpdateResourceDetailsTexts(resources);
         uiManager.ShowVariationTexts(variations);
+     
+        UpdateMonitorings();
     }
 
     private bool IsPerformable(List<ActionType> _actionBundle)
     {
-        var expectedResources = resources;
+        var expectedResources = new Resource[4];
+
+        expectedResources[(int)ResourceType.Population] = new Resource(ResourceType.Population, 0);
+        expectedResources[(int)ResourceType.Food] = new Resource(ResourceType.Food, 0);
+        expectedResources[(int)ResourceType.DNA] = new Resource(ResourceType.DNA, 0);
+        expectedResources[(int)ResourceType.Power] = new Resource(ResourceType.Power, 0);
+
+        for (int i = 0; i < 4; i++)
+            expectedResources[i].Storage = resources[i].Storage;
 
         foreach (var nowAction in _actionBundle)
         {
-            actions[(int)nowAction].PerformAction(expectedResources[0], expectedResources[(int)nowAction]);
-
-            foreach (var resource in expectedResources)
+            if (!actions[(int)nowAction].IsPerformable(expectedResources[0]))
             {
-                if (resource.Storage < 0)
-                    return false;
+                return false;
             }
+
+            actions[(int)nowAction].PerformAction(expectedResources[0], expectedResources[(int)nowAction]);
         }
 
         return true;
@@ -203,5 +211,18 @@ public class GameManager : MonoBehaviour
             Debug.LogError("NOT PERFOMABLE ACTION BUNDLE!!");
             actionBundle.Clear();
         }
+    }
+
+    private void UpdateMonitorings()
+    {
+        nowPopulationStorage = resources[0].Storage;
+        nowFoodStorage = resources[1].Storage;
+        nowDNAStorage = resources[2].Storage;
+        nowPowerStorage = resources[3].Storage;
+
+        nowPopulationIncome = actions[0].Income;
+        nowFoodIncome = actions[1].Income;
+        nowDNAIncome = actions[2].Income;
+        nowPowerIncome = actions[3].Income;
     }
 }

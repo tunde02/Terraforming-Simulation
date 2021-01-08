@@ -16,13 +16,11 @@ public enum ResourceType
 public class Resource
 {
     public ResourceType resourceType;
-    public string name;
     public long Storage { get; set; }
 
-    public Resource(ResourceType resourceType, string name, long storage, long income)
+    public Resource(ResourceType resourceType, long storage)
     {
         this.resourceType = resourceType;
-        this.name = name;
         Storage = storage;
     }
 }

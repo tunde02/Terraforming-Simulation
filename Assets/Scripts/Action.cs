@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
+using System;
 
 public enum ActionType
 {
@@ -14,7 +14,7 @@ public class Action
 {
     public ActionType Type { get; }
     public long Income { get; set; }
-    public float Weight { get; set; }
+    public double Weight { get; set; }
     public long Consumption { get; set; }
 
     public Action(ActionType type)
@@ -24,7 +24,7 @@ public class Action
         switch (Type)
         {
             case ActionType.Breed:
-                Income = 100;
+                Income = 7089471384;
                 Consumption = 0;
                 break;
             case ActionType.Hunt:
@@ -41,19 +41,25 @@ public class Action
                 break;
         }
 
-        Weight = 1.0f;
+        Weight = 1.0;
     }
 
     public List<(ResourceType resourceType, long amount)> PerformAction(Resource necessaryResource, Resource targetResource)
     {
         var variations = new List<(ResourceType resourceType, long amount)>();
+        long actualIncome = (long)(Income * Weight);
 
         necessaryResource.Storage -= Consumption;
-        targetResource.Storage += (long)(Income * Weight);
+        targetResource.Storage += actualIncome;
 
         variations.Add((necessaryResource.resourceType, -Consumption));
-        variations.Add((targetResource.resourceType, (long)(Income * Weight)));
+        variations.Add((targetResource.resourceType, actualIncome));
 
         return variations;
+    }
+
+    public bool IsPerformable(Resource necessaryResource)
+    {
+        return necessaryResource.Storage - Consumption > 0;
     }
 }

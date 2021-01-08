@@ -25,24 +25,24 @@ public class ResourceStatusPanel : MonoBehaviour
 
     public void UpdateResourceTexts(Resource[] resources)
     {
-        populationText.text = $"{GetStorageOverview(resources[(int)ResourceType.Population].Storage)}";
-        foodText.text       = $"{GetStorageOverview(resources[(int)ResourceType.Food].Storage)}";
-        DNAText.text        = $"{GetStorageOverview(resources[(int)ResourceType.DNA].Storage)}";
-        powerText.text      = $"{GetStorageOverview(resources[(int)ResourceType.Power].Storage)}";
+        populationText.text = $"{GetOverview(resources[(int)ResourceType.Population].Storage)}";
+        foodText.text       = $"{GetOverview(resources[(int)ResourceType.Food].Storage)}";
+        DNAText.text        = $"{GetOverview(resources[(int)ResourceType.DNA].Storage)}";
+        powerText.text      = $"{GetOverview(resources[(int)ResourceType.Power].Storage)}";
     }
 
-    private string GetStorageOverview(long storage)
+    private string GetOverview(long number)
     {
         int storageUnit = 0;
         double storageCompare = 1000;
 
-        while (storage >= storageCompare)
+        while (number >= storageCompare)
         {
             storageCompare *= 1000;
             storageUnit++;
         }
 
-        return $"{Math.Floor(storage / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
+        return $"{Math.Floor(number / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
     }
 
     public void ShowVariationTextsAnimation(List<(ResourceType resourceType, long amount)> variations)
@@ -69,7 +69,7 @@ public class ResourceStatusPanel : MonoBehaviour
 
     private void MoveVariationText(Text targetText, long amount)
     {
-        targetText.text = $"{(amount > 0 ? "+" : "")} {amount}";
+        targetText.text = $"{(amount > 0 ? "+" : "")} {GetOverview(amount)}";
         targetText.color = amount > 0 ? Color.green : Color.red;
 
         DOTween.Sequence().

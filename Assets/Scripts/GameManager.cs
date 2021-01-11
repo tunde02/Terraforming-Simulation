@@ -5,24 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public enum TurnStatus
-{
-    Wait,
-    Play,
-    Pause
-}
-
 public class GameManager : MonoBehaviour
 {
     [BoxGroup("Resources")] public long initialPopulationStorage;
     [BoxGroup("Resources")] public long initialFoodStorage;
     [BoxGroup("Resources")] public long initialDNAStorage;
     [BoxGroup("Resources")] public long initialPowerStorage;
-
-    [BoxGroup("Texts")] public Text populationText;
-    [BoxGroup("Texts")] public Text foodText;
-    [BoxGroup("Texts")] public Text DNAText;
-    [BoxGroup("Texts")] public Text powerText;
 
     // Monitoring values
     [BoxGroup("Monitoring")] public long nowPopulationStorage;
@@ -33,187 +21,36 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowDNAIncome;
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
-    [BoxGroup("Monitoring")] public float turnPlayTime;
-    [BoxGroup("Monitoring")] public int nowActionIndex;
 
     public UIManager uiManager;
     public TurnManager turnManager;
-    public float turnPeriodSecond;
-
-
-    public TurnStatus turnStatus;
-    private Resource[] resources;
-    private Action[] actions;
-    private List<ActionType> actionBundle;
-    private float prevTime;
+    public ActionManager actionManager;
+    public List<Resource> resources;
     
 
     void Awake()
     {
         InitResources();
-        InitActions();
-        actionBundle = new List<ActionType>();
-        turnStatus = TurnStatus.Wait;
     }
 
     void Start()
     {
         uiManager.UpdateResourceStatusTexts(resources);
         uiManager.UpdateResourceDetailsTexts(resources);
-
-        FillTestActions();
-
-        UpdateMonitorings();
-    }
-
-    void Update()
-    {
-        switch (turnStatus)
-        {
-            case TurnStatus.Wait:
-                break;
-            case TurnStatus.Play:
-                turnPlayTime += Time.time - prevTime;
-                prevTime = Time.time;
-
-                if (turnPlayTime >= turnPeriodSecond / actionBundle.Count * (nowActionIndex + 1))
-                {
-                    PerformActionAt(nowActionIndex++);
-                }
-
-                if (nowActionIndex >= actionBundle.Count)
-                {
-                    FinishTurn();
-                }
-
-                break;
-            case TurnStatus.Pause:
-                break;
-        }
     }
 
     private void InitResources()
     {
-        resources = new Resource[4];
-
-        resources[(int)ResourceType.Population] = new Resource(ResourceType.Population, initialPopulationStorage);
-        resources[(int)ResourceType.Food] = new Resource(ResourceType.Food, initialFoodStorage);
-        resources[(int)ResourceType.DNA] = new Resource(ResourceType.DNA, initialDNAStorage);
-        resources[(int)ResourceType.Power] = new Resource(ResourceType.Power, initialPowerStorage);
-    }
-
-    private void InitActions()
-    {
-        actions = new Action[4];
-
-        actions[0] = new Action(ActionType.Breed);
-        actions[1] = new Action(ActionType.Hunt);
-        actions[2] = new Action(ActionType.Evolve);
-        actions[3] = new Action(ActionType.Train);
-    }
-
-    public void StartTurn()
-    {
-        Debug.Log("START TURN");
-
-        turnStatus = TurnStatus.Play;
-
-        prevTime = Time.time;
-        turnPlayTime = 0f;
-        nowActionIndex = 0;
-
-        turnManager.StartTurnGauageAnimation(turnPeriodSecond);
-    }
-
-    public void PauseTurn()
-    {
-        Debug.Log("PAUSE TURN");
-
-        turnStatus = TurnStatus.Pause;
-
-        turnManager.StopTurnGaugeAnimation();
-    }
-
-    public void ResumeTurn()
-    {
-        Debug.Log("RESUME TURN");
-
-        turnStatus = TurnStatus.Play;
-
-        prevTime = Time.time;
-
-        turnManager.StartTurnGauageAnimation(turnPeriodSecond - turnPlayTime);
-    }
-
-    public void FinishTurn()
-    {
-        Debug.Log("FINISH TURN");
-
-        turnStatus = TurnStatus.Wait;
-
-        uiManager.ChangeStartTurnBtnImageTo("PLAY");
-        turnManager.ResetTurnGauge();
-    }
-
-    public void PerformActionAt(int actionIndex)
-    {
-        var nowAction = actionBundle[actionIndex];
-        var variations = actions[(int)nowAction].PerformAction(resources[0], resources[(int)nowAction]);
-
-        uiManager.UpdateResourceStatusTexts(resources);
-        uiManager.UpdateResourceDetailsTexts(resources);
-        uiManager.ShowVariationTexts(variations);
-     
-        UpdateMonitorings();
-    }
-
-    private bool IsPerformable(List<ActionType> _actionBundle)
-    {
-        var expectedResources = new Resource[4];
-
-        expectedResources[(int)ResourceType.Population] = new Resource(ResourceType.Population, 0);
-        expectedResources[(int)ResourceType.Food] = new Resource(ResourceType.Food, 0);
-        expectedResources[(int)ResourceType.DNA] = new Resource(ResourceType.DNA, 0);
-        expectedResources[(int)ResourceType.Power] = new Resource(ResourceType.Power, 0);
-
-        for (int i = 0; i < 4; i++)
-            expectedResources[i].Storage = resources[i].Storage;
-
-        foreach (var nowAction in _actionBundle)
+        resources = new List<Resource>(4)
         {
-            if (!actions[(int)nowAction].IsPerformable(expectedResources[0]))
-            {
-                return false;
-            }
-
-            actions[(int)nowAction].PerformAction(expectedResources[0], expectedResources[(int)nowAction]);
-        }
-
-        return true;
+            new Resource(ResourceType.Population, initialPopulationStorage),
+            new Resource(ResourceType.Food, initialFoodStorage),
+            new Resource(ResourceType.DNA, initialDNAStorage),
+            new Resource(ResourceType.Power, initialPowerStorage)
+        };
     }
 
-    [Button(Name = "Fill Test Actions")]
-    public void FillTestActions()
-    {
-        actionBundle.Add(ActionType.Hunt);
-        actionBundle.Add(ActionType.Hunt);
-        actionBundle.Add(ActionType.Hunt);
-        actionBundle.Add(ActionType.Breed);
-        actionBundle.Add(ActionType.Breed);
-        actionBundle.Add(ActionType.Breed);
-        actionBundle.Add(ActionType.Breed);
-        actionBundle.Add(ActionType.Evolve);
-        actionBundle.Add(ActionType.Evolve);
-        actionBundle.Add(ActionType.Hunt);
-
-        if (!IsPerformable(actionBundle))
-        {
-            Debug.LogError("NOT PERFOMABLE ACTION BUNDLE!!");
-            actionBundle.Clear();
-        }
-    }
-
-    private void UpdateMonitorings()
+    public void UpdateMonitorings(List<Action> actions)
     {
         nowPopulationStorage = resources[0].Storage;
         nowFoodStorage = resources[1].Storage;

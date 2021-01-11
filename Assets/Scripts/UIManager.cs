@@ -16,12 +16,12 @@ public class UIManager : MonoBehaviour
         startTurnBtn.ChangeBtnImageTo(imgType);
     }
 
-    public void UpdateResourceStatusTexts(Resource[] resources)
+    public void UpdateResourceStatusTexts(List<Resource> resources)
     {
         resourceStatusPanel.UpdateResourceTexts(resources);
     }
 
-    public void UpdateResourceDetailsTexts(Resource[] resources)
+    public void UpdateResourceDetailsTexts(List<Resource> resources)
     {
         resourceDetailsPanel.UpdateResourceDetailsTexts(resources);
     }

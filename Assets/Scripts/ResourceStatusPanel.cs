@@ -31,6 +31,14 @@ public class ResourceStatusPanel : MonoBehaviour
         powerText.text      = $"{GetOverview(resources[(int)ResourceType.Power].Storage)}";
     }
 
+    public void UpdateResourceTexts(List<Resource> resources)
+    {
+        populationText.text = $"{GetOverview(resources[(int)ResourceType.Population].Storage)}";
+        foodText.text = $"{GetOverview(resources[(int)ResourceType.Food].Storage)}";
+        DNAText.text = $"{GetOverview(resources[(int)ResourceType.DNA].Storage)}";
+        powerText.text = $"{GetOverview(resources[(int)ResourceType.Power].Storage)}";
+    }
+
     private string GetOverview(long number)
     {
         int storageUnit = 0;

@@ -8,26 +8,32 @@ public class StartTurnBtn : MonoBehaviour
     public Sprite playBtnImage;
     public Sprite pauseBtnImage;
 
-    public void OnClicked(GameManager gameManager)
+
+    public void OnClicked(TurnManager turnManager)
     {
-        switch (gameManager.turnStatus)
+        switch (turnManager.nowTurn.Status)
         {
             case TurnStatus.Wait:
                 ChangeBtnImageTo("PAUSE");
-                gameManager.StartTurn();
+                turnManager.StartTurn();
 
                 break;
             case TurnStatus.Play:
                 ChangeBtnImageTo("PLAY");
-                gameManager.PauseTurn();
+                turnManager.PauseTurn();
 
                 break;
             case TurnStatus.Pause:
                 ChangeBtnImageTo("PAUSE");
-                gameManager.ResumeTurn();
+                turnManager.ResumeTurn();
 
                 break;
         }
+    }
+
+    public void hello()
+    {
+        Debug.Log("hgege");
     }
 
     public void ChangeBtnImageTo(string imgType)

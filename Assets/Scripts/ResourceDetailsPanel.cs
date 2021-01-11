@@ -18,7 +18,7 @@ public class ResourceDetailsPanel : MonoBehaviour
         powerText.text = "";
     }
 
-    public void UpdateResourceDetailsTexts(Resource[] resources)
+    public void UpdateResourceDetailsTexts(List<Resource> resources)
     {
         populationText.text = string.Format("{0:#,0}", resources[0].Storage);
         foodText.text       = string.Format("{0:#,0}", resources[1].Storage);

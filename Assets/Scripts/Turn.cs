@@ -11,11 +11,11 @@ public class Turn
     public float PlayTime { get; set; }
 
 
-    public Turn(List<Resource> startResources, List<ActionType> actionBundle, float period)
+    public Turn(List<Resource> resources, List<ActionType> actionBundle, float period)
     {
-        this.startResources = new List<Resource>(startResources);
-        endResources = new List<Resource>(startResources);
-        this.actionBundle = new List<ActionType>(actionBundle);
+        startResources = resources.ConvertAll(res => new Resource(res.resourceType, res.Storage));
+        endResources = resources.ConvertAll(res => new Resource(res.resourceType, res.Storage));
+        this.actionBundle = actionBundle;
         Status = TurnStatus.Wait;
         Period = period;
         PlayTime = 0f;

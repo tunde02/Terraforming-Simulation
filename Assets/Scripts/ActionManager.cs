@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ActionManager : MonoBehaviour
 {
-    public GameManager gameManager;
     public UIManager uiManager;
 
 
@@ -53,8 +52,6 @@ public class ActionManager : MonoBehaviour
         uiManager.UpdateResourceStatusTexts(nowTurn.endResources);
         uiManager.UpdateResourceDetailsTexts(nowTurn.endResources);
         uiManager.ShowVariationTexts(variations);
-
-        gameManager.UpdateMonitorings(actions);
     }
 
     public bool IsPerformable(List<Resource> resources)

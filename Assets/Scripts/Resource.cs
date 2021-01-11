@@ -15,7 +15,7 @@ public enum ResourceType
 
 public class Resource
 {
-    public ResourceType resourceType;
+    public readonly ResourceType resourceType;
     public long Storage { get; set; }
 
     public Resource(ResourceType resourceType, long storage)

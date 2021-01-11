@@ -45,6 +45,7 @@ public class TurnManager : MonoBehaviour
                 if (nowTurn.IsEnoughPlayTime(nowActionIndex))
                 {
                     actionManager.PerformActionAt(nowTurn, nowActionIndex++);
+                    gameManager.UpdateResources(nowTurn.endResources);
                 }
 
                 if (nowActionIndex >= nowTurn.actionBundle.Count)
@@ -101,6 +102,20 @@ public class TurnManager : MonoBehaviour
         nowTurn.Status = TurnStatus.Wait;
 
         startTurnBtn.ChangeBtnImageTo("PLAY");
+        ResetTurnGauge();
+    }
+
+    public void ResetTurn()
+    {
+        Debug.Log("RESET TURN");
+
+        nowTurn.Status = TurnStatus.Wait;
+        nowTurn.PlayTime = 0f;
+
+        gameManager.UpdateResources(nowTurn.startResources);
+
+        startTurnBtn.ChangeBtnImageTo("PLAY");
+        StopTurnGaugeAnimation();
         ResetTurnGauge();
     }
 

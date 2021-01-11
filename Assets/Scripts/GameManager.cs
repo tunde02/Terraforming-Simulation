@@ -50,16 +50,22 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    public void UpdateMonitorings(List<Action> actions)
+    public void UpdateResources(List<Resource> resources)
+    {
+        for (int i = 0; i < resources.Count; i++)
+            this.resources[i].Storage = resources[i].Storage;
+
+        uiManager.UpdateResourceStatusTexts(this.resources);
+        uiManager.UpdateResourceDetailsTexts(this.resources);
+
+        UpdateMonitorings();
+    }
+
+    public void UpdateMonitorings()
     {
         nowPopulationStorage = resources[0].Storage;
         nowFoodStorage = resources[1].Storage;
         nowDNAStorage = resources[2].Storage;
         nowPowerStorage = resources[3].Storage;
-
-        nowPopulationIncome = actions[0].Income;
-        nowFoodIncome = actions[1].Income;
-        nowDNAIncome = actions[2].Income;
-        nowPowerIncome = actions[3].Income;
     }
 }

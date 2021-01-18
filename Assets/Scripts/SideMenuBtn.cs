@@ -15,21 +15,21 @@ public class SideMenuBtn : MonoBehaviour
         {
             parentPanel.OpenSideMenu();
 
-            if (targetRectTransform.GetSiblingIndex() < 5)
+            if (targetRectTransform.GetSiblingIndex() < 2)
             {
-                targetRectTransform.SetAsLastSibling();
+                targetRectTransform.SetSiblingIndex(2);
             }
         }
         else
         {
             // 맨 위의 패널이 targetPanel 이면 닫고, 아니면 시블링 인덱스 변경
-            if (targetRectTransform.GetSiblingIndex() >= 5)
+            if (targetRectTransform.GetSiblingIndex() >= 2)
             {
                 parentPanel.CloseSideMenu();
             }
             else
             {
-                targetRectTransform.SetAsLastSibling();
+                targetRectTransform.SetSiblingIndex(2);
             }
         }
     }

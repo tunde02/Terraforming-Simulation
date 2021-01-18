@@ -11,7 +11,7 @@ public class SideMenuPanel : MonoBehaviour
 
     private RectTransform rectTransform;
     private readonly float inScreenPosX = 150f;
-    private readonly float outScreenPosX = 935f;
+    private readonly float outScreenPosX = 970f;
 
     private void Start()
     {

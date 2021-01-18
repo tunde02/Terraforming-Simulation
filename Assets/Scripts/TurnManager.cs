@@ -29,7 +29,7 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
-        nowTurn = new Turn(new List<Resource>(), new List<ActionType>(), turnPeriodSecond);
+        nowTurn = new Turn(new List<Resource>(), new List<ActionBundleElement>(), 10, turnPeriodSecond);
     }
 
     void Update()
@@ -45,12 +45,13 @@ public class TurnManager : MonoBehaviour
                 if (nowTurn.IsEnoughPlayTime(nowActionIndex))
                 {
                     actionManager.PerformActionAt(nowTurn, nowActionIndex++);
-                    gameManager.UpdateResources(nowTurn.endResources);
+                    gameManager.UpdateResources(nowTurn.resultResources);
                 }
 
-                if (nowActionIndex >= nowTurn.actionBundle.Count)
+                if (nowActionIndex >= nowTurn.LockIndex)
                 {
                     FinishTurn();
+                    StartTurn();
                 }
 
                 break;
@@ -61,9 +62,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        Debug.Log("START TURN");
-
-        nowTurn = new Turn(gameManager.resources, actionManager.actionBundle, turnPeriodSecond)
+        nowTurn = new Turn(gameManager.resources, actionManager.ActionBundle, actionManager.LockIndex, turnPeriodSecond)
         {
             Status = TurnStatus.Play,
             PlayTime = 0f
@@ -72,39 +71,45 @@ public class TurnManager : MonoBehaviour
         prevTime = Time.time;
         nowActionIndex = 0;
 
+        uiManager.UpdateActionBundlePanel(nowTurn);
+        startTurnBtn.ChangeBtnImageTo("PAUSE");
+
         StartTurnGauageAnimation(turnPeriodSecond);
     }
 
     public void PauseTurn()
     {
-        Debug.Log("PAUSE TURN");
+        if (nowTurn.Status != TurnStatus.Play)
+            return;
 
         nowTurn.Status = TurnStatus.Pause;
+
+        startTurnBtn.ChangeBtnImageTo("PLAY");
 
         StopTurnGaugeAnimation();
     }
 
     public void ResumeTurn()
     {
-        Debug.Log("RESUME TURN");
+        if (nowTurn.Status != TurnStatus.Pause)
+            return;
 
         nowTurn.Status = TurnStatus.Play;
-
         prevTime = Time.time;
+
+        startTurnBtn.ChangeBtnImageTo("PAUSE");
 
         StartTurnGauageAnimation(nowTurn.Period - nowTurn.PlayTime);
     }
 
     public void FinishTurn()
     {
-        Debug.Log("FINISH TURN");
-
         nowTurn.Status = TurnStatus.Wait;
 
-        startTurnBtn.ChangeBtnImageTo("PLAY");
         ResetTurnGauge();
     }
 
+    // 지울 예정
     public void ResetTurn()
     {
         Debug.Log("RESET TURN");
@@ -115,6 +120,7 @@ public class TurnManager : MonoBehaviour
         gameManager.UpdateResources(nowTurn.startResources);
 
         startTurnBtn.ChangeBtnImageTo("PLAY");
+
         StopTurnGaugeAnimation();
         ResetTurnGauge();
     }

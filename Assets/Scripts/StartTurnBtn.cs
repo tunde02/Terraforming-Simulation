@@ -14,26 +14,15 @@ public class StartTurnBtn : MonoBehaviour
         switch (turnManager.nowTurn.Status)
         {
             case TurnStatus.Wait:
-                ChangeBtnImageTo("PAUSE");
                 turnManager.StartTurn();
-
                 break;
             case TurnStatus.Play:
-                ChangeBtnImageTo("PLAY");
                 turnManager.PauseTurn();
-
                 break;
             case TurnStatus.Pause:
-                ChangeBtnImageTo("PAUSE");
                 turnManager.ResumeTurn();
-
                 break;
         }
-    }
-
-    public void hello()
-    {
-        Debug.Log("hgege");
     }
 
     public void ChangeBtnImageTo(string imgType)

@@ -11,10 +11,16 @@ public class ActionManager : MonoBehaviour
     public Transform[] elementPositions;
     public GameObject notEnoughSlotsWarningWindow;
     public GameObject noEmptySlotWarningWindow;
+    public GameObject unsavedWarningWindow;
     public float offset = 3.0f;
 
 
-    private List<Action> actions;
+    private readonly List<Action> ACTION = new List<Action>(4) {
+            new Action(ActionType.Breed),
+            new Action(ActionType.Hunt),
+            new Action(ActionType.Evolve),
+            new Action(ActionType.Train)
+    };
     public List<ActionBundleElement> ActionBundle { get; set; }
     private List<ActionBundleElement> prevActionBundle;
     private List<GameObject> elementObjects;
@@ -25,49 +31,8 @@ public class ActionManager : MonoBehaviour
 
     void Awake()
     {
-        InitActions();
         InitActionBundle();
         InitElementObjects();
-    }
-
-    public void LoadActionBundleDetailsPanel()
-    {
-        prevActionBundle = ActionBundle.ConvertAll(a => new ActionBundleElement(a.Action, a.IsEmpty, a.IsLocked));
-
-        for (int i = 0; i < SLOTSIZE; i++)
-        {
-            Destroy(elementObjects[i]);
-
-            if (ActionBundle[i].IsLocked)
-            {
-                elementObjects[i] = Instantiate(slotPrefabs[4], elementPositions[i]);
-            }
-            else if (ActionBundle[i].IsEmpty)
-            {
-                elementObjects[i] = null;
-            }
-            else
-            {
-                int removeIndex = i;
-
-                elementObjects[i] = Instantiate(slotPrefabs[(int)ActionBundle[i].Action.Type], elementPositions[i]);
-                elementObjects[i].GetComponentInChildren<Button>().onClick.AddListener(() => RemoveBundleElementAt(removeIndex));
-            }
-        }
-
-        UpdateTopIndex();
-    }
-
-    #region Initialize
-    private void InitActions()
-    {
-        actions = new List<Action>(4)
-        {
-            new Action(ActionType.Breed),
-            new Action(ActionType.Hunt),
-            new Action(ActionType.Evolve),
-            new Action(ActionType.Train)
-        };
     }
 
     private void InitActionBundle()
@@ -93,7 +58,34 @@ public class ActionManager : MonoBehaviour
         for (int i = LockIndex; i < SLOTSIZE; i++)
             elementObjects.Add(Instantiate(slotPrefabs[4], elementPositions[i]));
     }
-    #endregion
+
+    public void LoadActionBundleDetailsPanel()
+    {
+        prevActionBundle = ActionBundle.ConvertAll(a => new ActionBundleElement(a.PlacedAction, a.IsEmpty, a.IsLocked));
+
+        for (int i = 0; i < SLOTSIZE; i++)
+        {
+            Destroy(elementObjects[i]);
+
+            if (ActionBundle[i].IsLocked)
+            {
+                elementObjects[i] = Instantiate(slotPrefabs[4], elementPositions[i]);
+            }
+            else if (ActionBundle[i].IsEmpty)
+            {
+                elementObjects[i] = null;
+            }
+            else
+            {
+                int removeIndex = i;
+
+                elementObjects[i] = Instantiate(slotPrefabs[(int)ActionBundle[i].PlacedAction.Type], elementPositions[i]);
+                elementObjects[i].GetComponentInChildren<Button>().onClick.AddListener(() => RemoveBundleElementAt(removeIndex));
+            }
+        }
+
+        UpdateTopIndex();
+    }
 
     public void FillBundleElement(int actionId)
     {
@@ -108,7 +100,7 @@ public class ActionManager : MonoBehaviour
             elementObjects[topIndex] = Instantiate(slotPrefabs[actionId], elementPositions[topIndex]);
             elementObjects[topIndex].GetComponentInChildren<Button>().onClick.AddListener(() => RemoveBundleElementAt(removeIndex));
 
-            ActionBundle[topIndex].Action = actions[actionId];
+            ActionBundle[topIndex].PlacedAction = ACTION[actionId];
             ActionBundle[topIndex].IsEmpty = false;
 
             UpdateTopIndex();
@@ -121,22 +113,6 @@ public class ActionManager : MonoBehaviour
         elementObjects[index] = null;
 
         ActionBundle[index].IsEmpty = true;
-
-        UpdateTopIndex();
-    }
-
-    public void ResetActionBundle()
-    {
-        for (int i=0; i<LockIndex; i++)
-        {
-            if (elementObjects[i])
-            {
-                Destroy(elementObjects[i]);
-                elementObjects[i] = null;
-            }
-            
-            ActionBundle[i].IsEmpty = true;
-        }
 
         UpdateTopIndex();
     }
@@ -158,7 +134,12 @@ public class ActionManager : MonoBehaviour
         notEnoughSlotsWarningWindow.SetActive(true);
     }
 
-    public void UnlockBundleSlot()
+    public void ShowUnsavedWarning()
+    {
+        unsavedWarningWindow.SetActive(true);
+    }
+
+    public void UnlockSlot()
     {
         Destroy(elementObjects[LockIndex]);
         elementObjects[LockIndex] = null;
@@ -169,10 +150,10 @@ public class ActionManager : MonoBehaviour
         LockIndex++;
     }
 
-    public void UpdateActionBundle()
+    public void SaveActionBundle()
     {
         // Action Bundle이 전부 채워져있다면
-        // Action Bundle UI에 채워진 Action들을 actionBundle 리스트에 추가
+        // Action Bundle UI에 채워진 Action들을 actionBundle 리스트에 저장
         // 그렇지 않다면 경고창 띄워줌
 
         for (int i=0; i<LockIndex; i++)
@@ -190,14 +171,30 @@ public class ActionManager : MonoBehaviour
         ActionBundleDetailsCanvas.SetActive(false);
     }
 
-    public void RevertActionBundle()
+    public void ClearActionBundle()
+    {
+        for (int i = 0; i < LockIndex; i++)
+        {
+            if (elementObjects[i])
+            {
+                Destroy(elementObjects[i]);
+                elementObjects[i] = null;
+            }
+
+            ActionBundle[i].IsEmpty = true;
+        }
+
+        UpdateTopIndex();
+    }
+
+    public void ResetActionBundle()
     {
         ActionBundle = prevActionBundle;
     }
 
     public void PerformActionAt(Turn nowTurn, int actionIndex)
     {
-        var nowAction = nowTurn.actionBundle[actionIndex].Action;
+        var nowAction = nowTurn.actionBundle[actionIndex].PlacedAction;
         var variations = nowAction.PerformAction(nowTurn.resultResources[0], nowTurn.resultResources[(int)nowAction.Type]);
 
         uiManager.UpdateResourceStatusTexts(nowTurn.resultResources);
@@ -211,12 +208,12 @@ public class ActionManager : MonoBehaviour
 
         foreach (var element in ActionBundle)
         {
-            if (!element.Action.IsPerformable(expectedResources[0]))
+            if (!element.PlacedAction.IsPerformable(expectedResources[0]))
             {
                 return false;
             }
 
-            element.Action.PerformAction(expectedResources[0], expectedResources[(int)element.Action.Type]);
+            element.PlacedAction.PerformAction(expectedResources[0], expectedResources[(int)element.PlacedAction.Type]);
         }
 
         return true;
@@ -224,15 +221,15 @@ public class ActionManager : MonoBehaviour
 
     public void FillActionBundleByPreset()
     {
-        ActionBundle[0] = new ActionBundleElement(actions[1]);
-        ActionBundle[1] = new ActionBundleElement(actions[1]);
-        ActionBundle[2] = new ActionBundleElement(actions[1]);
-        ActionBundle[3] = new ActionBundleElement(actions[0]);
-        ActionBundle[4] = new ActionBundleElement(actions[0]);
-        ActionBundle[5] = new ActionBundleElement(actions[0]);
-        ActionBundle[6] = new ActionBundleElement(actions[0]);
-        ActionBundle[7] = new ActionBundleElement(actions[2]);
-        ActionBundle[8] = new ActionBundleElement(actions[2]);
-        ActionBundle[9] = new ActionBundleElement(actions[3]);
+        ActionBundle[0] = new ActionBundleElement(ACTION[1]);
+        ActionBundle[1] = new ActionBundleElement(ACTION[1]);
+        ActionBundle[2] = new ActionBundleElement(ACTION[1]);
+        ActionBundle[3] = new ActionBundleElement(ACTION[0]);
+        ActionBundle[4] = new ActionBundleElement(ACTION[0]);
+        ActionBundle[5] = new ActionBundleElement(ACTION[0]);
+        ActionBundle[6] = new ActionBundleElement(ACTION[0]);
+        ActionBundle[7] = new ActionBundleElement(ACTION[2]);
+        ActionBundle[8] = new ActionBundleElement(ACTION[2]);
+        ActionBundle[9] = new ActionBundleElement(ACTION[3]);
     }
 }

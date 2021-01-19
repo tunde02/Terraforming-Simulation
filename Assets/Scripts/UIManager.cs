@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
             if (actionBundle[i].IsLocked)
                 break;
 
-            actionSlotList.Add(Instantiate(slotPrefabs[(int)actionBundle[i].Action.Type], actionBundlePanel));
+            actionSlotList.Add(Instantiate(slotPrefabs[(int)actionBundle[i].PlacedAction.Type], actionBundlePanel));
             actionSlotList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + offset), slotY);
             actionSlotList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
         }
@@ -89,7 +89,7 @@ public class UIManager : MonoBehaviour
             if (turn.actionBundle[i].IsLocked)
                 break;
 
-            actionSlotList.Add(Instantiate(slotPrefabs[(int)turn.actionBundle[i].Action.Type], actionBundlePanel));
+            actionSlotList.Add(Instantiate(slotPrefabs[(int)turn.actionBundle[i].PlacedAction.Type], actionBundlePanel));
             actionSlotList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + offset), slotY);
             actionSlotList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
         }

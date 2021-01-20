@@ -91,7 +91,7 @@ public class ActionManager : MonoBehaviour
     {
         if (topIndex >= ActionBundle.Count || ActionBundle[topIndex].IsLocked)
         {
-            ShowNoEmptySlotWarning();
+            uiManager.ShowAlertWindow("No More Empty Slot");
         }
         else
         {
@@ -124,21 +124,6 @@ public class ActionManager : MonoBehaviour
             topIndex++;
     }
 
-    public void ShowNoEmptySlotWarning()
-    {
-        noEmptySlotWarningWindow.SetActive(true);
-    }
-
-    public void ShowNotEnoughSlotsWarning()
-    {
-        notEnoughSlotsWarningWindow.SetActive(true);
-    }
-
-    public void ShowUnsavedWarning()
-    {
-        unsavedWarningWindow.SetActive(true);
-    }
-
     public void UnlockSlot()
     {
         Destroy(elementObjects[LockIndex]);
@@ -160,7 +145,7 @@ public class ActionManager : MonoBehaviour
         {
             if (ActionBundle[i].IsEmpty)
             {
-                ShowNotEnoughSlotsWarning();
+                uiManager.ShowAlertWindow("Not Enough Slots");
                 return;
             }
         }

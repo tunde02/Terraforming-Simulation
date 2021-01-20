@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public ActionManager actionManager;
     public StartTurnBtn startTurnBtn;
     public ResourceStatusPanel resourceStatusPanel;
     public ResourceDetailsPanel resourceDetailsPanel;
+    public GameObject actionBundleDetailsCanvas;
     public Transform actionBundlePanel;
     public GameObject[] slotPrefabs;
+    public GameObject alertWindow;
 
 
     private readonly float slotStartX = -460;
@@ -55,26 +58,6 @@ public class UIManager : MonoBehaviour
         resourceStatusPanel.ShowVariationTextsAnimation(variations);
     }
 
-    public void UpdateActionBundlePanel(List<ActionBundleElement> actionBundle, int slotCount)
-    {
-        float slotWidth = (slotEndX - slotStartX - (slotCount - 1) * offset) / slotCount;
-
-        foreach (var slot in actionSlotList)
-            Destroy(slot);
-
-        actionSlotList = new List<GameObject>();
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            if (actionBundle[i].IsLocked)
-                break;
-
-            actionSlotList.Add(Instantiate(slotPrefabs[(int)actionBundle[i].PlacedAction.Type], actionBundlePanel));
-            actionSlotList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + offset), slotY);
-            actionSlotList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
-        }
-    }
-
     public void UpdateActionBundlePanel(Turn turn)
     {
         float slotWidth = (slotEndX - slotStartX - (turn.LockIndex - 1) * offset) / turn.LockIndex;
@@ -93,5 +76,49 @@ public class UIManager : MonoBehaviour
             actionSlotList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + offset), slotY);
             actionSlotList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
         }
+    }
+
+    public void ShowAlertWindow(string alertType)
+    {
+        // TODO: add click sound
+        GameObject alert = Instantiate(alertWindow, actionBundleDetailsCanvas.transform);
+        Text alertContent = alert.GetComponentInChildren<Text>();
+        Button leftButton = alert.GetComponentsInChildren<Button>()[0];
+        Button rightButton = alert.GetComponentsInChildren<Button>()[1];
+
+        switch (alertType)
+        {
+            case "No More Empty Slot":
+                alertContent.text = "슬롯이 가득 찼습니다.";
+                leftButton.gameObject.SetActive(false);
+                rightButton.GetComponentInChildren<Text>().text = "확인";
+                rightButton.onClick.AddListener(() => {
+                    Destroy(alert);
+                });
+                break;
+            case "Not Enough Slots":
+                alertContent.text =  "슬롯이 다 채워지지 않았습니다.\n저장하지 않고 나가시겠습니까?";
+                leftButton.onClick.AddListener(() => {
+                    actionManager.ResetActionBundle();
+                    actionBundleDetailsCanvas.SetActive(false);
+                    Destroy(alert);
+                });
+                rightButton.onClick.AddListener(() => {
+                    Destroy(alert);
+                });
+                break;
+            case "Unsaved Scenario":
+                break;
+            case "Impossible Scenario":
+                break;
+            default:
+                Debug.LogError("Invalid alertType : UIManager.cs - ShowAlert()");
+                break;
+        }
+    }
+
+    public void hello(TurnStatus ss)
+    {
+        Debug.Log("heqwe");
     }
 }

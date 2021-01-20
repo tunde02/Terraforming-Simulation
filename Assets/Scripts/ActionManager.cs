@@ -179,7 +179,7 @@ public class ActionManager : MonoBehaviour
 
     public void PerformActionAt(Turn nowTurn, int actionIndex)
     {
-        var nowAction = nowTurn.actionBundle[actionIndex].PlacedAction;
+        var nowAction = nowTurn.ActionBundle[actionIndex].PlacedAction;
         var variations = nowAction.PerformAction(nowTurn.resultResources[0], nowTurn.resultResources[(int)nowAction.Type]);
 
         uiManager.UpdateResourceStatusTexts(nowTurn.resultResources);

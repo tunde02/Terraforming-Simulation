@@ -69,10 +69,10 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < turn.LockIndex; i++)
         {
-            if (turn.actionBundle[i].IsLocked)
+            if (turn.ActionBundle[i].IsLocked)
                 break;
 
-            actionSlotList.Add(Instantiate(slotPrefabs[(int)turn.actionBundle[i].PlacedAction.Type], actionBundlePanel));
+            actionSlotList.Add(Instantiate(slotPrefabs[(int)turn.ActionBundle[i].PlacedAction.Type], actionBundlePanel));
             actionSlotList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + offset), slotY);
             actionSlotList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
         }
@@ -115,10 +115,5 @@ public class UIManager : MonoBehaviour
                 Debug.LogError("Invalid alertType : UIManager.cs - ShowAlert()");
                 break;
         }
-    }
-
-    public void hello(TurnStatus ss)
-    {
-        Debug.Log("heqwe");
     }
 }

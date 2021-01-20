@@ -5,7 +5,7 @@ public class Turn
 {
     public readonly List<Resource> startResources;
     public List<Resource> resultResources;
-    public readonly List<ActionBundleElement> actionBundle;
+    public List<ActionBundleElement> ActionBundle { get; }
     public int LockIndex { get; set; }
     public TurnStatus Status { get; set; }
     public float Period { get; set; }
@@ -16,7 +16,7 @@ public class Turn
     {
         startResources = resources.ConvertAll(res => new Resource(res.resourceType, res.Storage));
         resultResources = resources.ConvertAll(res => new Resource(res.resourceType, res.Storage));
-        this.actionBundle = actionBundle;
+        ActionBundle = actionBundle.ConvertAll(element => new ActionBundleElement(element.PlacedAction, element.IsEmpty, element.IsLocked));
         LockIndex = lockIndex;
         Status = TurnStatus.Wait;
         Period = period;

@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Resources")] public long initialDNAStorage;
     [BoxGroup("Resources")] public long initialPowerStorage;
 
-    // Monitoring values
     [BoxGroup("Monitoring")] public long nowPopulationStorage;
     [BoxGroup("Monitoring")] public long nowPopulationIncome;
     [BoxGroup("Monitoring")] public long nowFoodStorage;
@@ -22,10 +21,10 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
 
-    public UIManager uiManager;
-    public TurnManager turnManager;
-    public ActionManager actionManager;
-    public List<Resource> resources;
+    public List<Resource> Resources { get; set; }
+    public float TurnPeriod { get; } = 10;
+    public int SlotSize { get; } = 14;
+    public int LockedIndex { get; set; } = 10;
     
 
     void Awake()
@@ -33,39 +32,30 @@ public class GameManager : MonoBehaviour
         InitResources();
     }
 
-    void Start()
+    public void InitResources()
     {
-        uiManager.UpdateResourceStatusTexts(resources);
-        uiManager.UpdateResourceDetailsTexts(resources);
-    }
-
-    private void InitResources()
-    {
-        resources = new List<Resource>(4)
+        Resources = new List<Resource>(4)
         {
-            new Resource(ResourceType.Population, initialPopulationStorage),
-            new Resource(ResourceType.Food, initialFoodStorage),
+            new Resource(ResourceType.POPULATION, initialPopulationStorage),
+            new Resource(ResourceType.FOOD, initialFoodStorage),
             new Resource(ResourceType.DNA, initialDNAStorage),
-            new Resource(ResourceType.Power, initialPowerStorage)
+            new Resource(ResourceType.POWER, initialPowerStorage)
         };
     }
 
     public void UpdateResources(List<Resource> resources)
     {
         for (int i = 0; i < resources.Count; i++)
-            this.resources[i].Storage = resources[i].Storage;
-
-        uiManager.UpdateResourceStatusTexts(this.resources);
-        uiManager.UpdateResourceDetailsTexts(this.resources);
+            Resources[i].Storage = resources[i].Storage;
 
         UpdateMonitorings();
     }
 
     public void UpdateMonitorings()
     {
-        nowPopulationStorage = resources[0].Storage;
-        nowFoodStorage = resources[1].Storage;
-        nowDNAStorage = resources[2].Storage;
-        nowPowerStorage = resources[3].Storage;
+        nowPopulationStorage = Resources[0].Storage;
+        nowFoodStorage = Resources[1].Storage;
+        nowDNAStorage = Resources[2].Storage;
+        nowPowerStorage = Resources[3].Storage;
     }
 }

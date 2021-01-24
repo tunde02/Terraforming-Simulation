@@ -3,140 +3,90 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-
-public enum TurnStatus
-{
-    Wait,
-    Play,
-    Pause
-}
 
 public class TurnManager : MonoBehaviour
 {
-    public UIManager uiManager;
-    public GameManager gameManager;
-    public ActionManager actionManager;
-    public RawImage turnGauage;
-    public StartTurnBtn startTurnBtn;
-    public float turnPeriodSecond;
-
-
-    public Turn nowTurn;
+    public Turn NowTurn { get; set; }
+    private GameManager gameManager;
+    private ActionManager actionManager;
     private float prevTime;
-    private int nowActionIndex;
 
 
-    void Awake()
+    [Inject]
+    public void Construct(GameManager gameManager, ActionManager actionManager)
     {
-        nowTurn = new Turn(new List<Resource>(), new List<ActionBundleElement>(), 10, turnPeriodSecond);
+        this.gameManager = gameManager;
+        this.actionManager = actionManager;
+    }
+
+    void Start()
+    {
+        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TurnPeriod);
+        Turn.OnTurnStatusChanged += ManageTurn;
     }
 
     void Update()
     {
-        switch (nowTurn.Status)
+        if (NowTurn.Status == TurnStatus.PLAYING)
         {
-            case TurnStatus.Wait:
-                break;
-            case TurnStatus.Play:
-                nowTurn.PlayTime += Time.time - prevTime;
-                prevTime = Time.time;
+            NowTurn.PlayTime += Time.time - prevTime;
+            prevTime = Time.time;
+        }
+    }
 
-                if (nowTurn.IsEnoughPlayTime(nowActionIndex))
-                {
-                    actionManager.PerformActionAt(nowTurn, nowActionIndex++);
-                    gameManager.UpdateResources(nowTurn.resultResources);
-                }
-
-                if (nowActionIndex >= nowTurn.LockIndex)
-                {
-                    FinishTurn();
-                    StartTurn();
-                }
-
-                break;
-            case TurnStatus.Pause:
-                break;
+    private void ManageTurn(Turn turn, TurnStatus prevStatus)
+    {
+        if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.WAITING)
+        {
+            StartTurn();
         }
     }
 
     public void StartTurn()
     {
-        nowTurn = new Turn(gameManager.resources, actionManager.ActionBundle, actionManager.LockIndex, turnPeriodSecond)
+        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TurnPeriod)
         {
-            Status = TurnStatus.Play,
-            PlayTime = 0f
+            Status = TurnStatus.PLAYING
         };
 
         prevTime = Time.time;
-        nowActionIndex = 0;
-
-        uiManager.UpdateActionBundlePanel(nowTurn);
-        startTurnBtn.ChangeBtnImageTo("PAUSE");
-
-        StartTurnGauageAnimation(turnPeriodSecond);
     }
 
     public void PauseTurn()
     {
-        if (nowTurn.Status != TurnStatus.Play)
+        if (NowTurn.Status != TurnStatus.PLAYING)
             return;
 
-        nowTurn.Status = TurnStatus.Pause;
-
-        startTurnBtn.ChangeBtnImageTo("PLAY");
-
-        StopTurnGaugeAnimation();
+        NowTurn.Status = TurnStatus.PAUSED;
     }
 
     public void ResumeTurn()
     {
-        if (nowTurn.Status != TurnStatus.Pause)
+        if (NowTurn.Status != TurnStatus.PAUSED)
             return;
 
-        nowTurn.Status = TurnStatus.Play;
+        NowTurn.Status = TurnStatus.PLAYING;
         prevTime = Time.time;
-
-        startTurnBtn.ChangeBtnImageTo("PAUSE");
-
-        StartTurnGauageAnimation(nowTurn.Period - nowTurn.PlayTime);
     }
 
-    public void FinishTurn()
-    {
-        nowTurn.Status = TurnStatus.Wait;
-
-        ResetTurnGauge();
-    }
+    //public void FinishTurn()
+    //{
+    //    NowTurn.Status = TurnStatus.WAITING;
+    //}
 
     // 지울 예정
-    public void ResetTurn()
-    {
-        Debug.Log("RESET TURN");
+    //public void ResetTurn()
+    //{
+    //    Debug.Log("RESET TURN");
 
-        nowTurn.Status = TurnStatus.Wait;
-        nowTurn.PlayTime = 0f;
+    //    NowTurn.Status = TurnStatus.WAITING;
+    //    NowTurn.PlayTime = 0f;
 
-        gameManager.UpdateResources(nowTurn.startResources);
+    //    GameManager.Instance.UpdateResources(NowTurn.StartingResources);
 
-        startTurnBtn.ChangeBtnImageTo("PLAY");
-
-        StopTurnGaugeAnimation();
-        ResetTurnGauge();
-    }
-
-    public void StartTurnGauageAnimation(float duration)
-    {
-        turnGauage.rectTransform.DOScaleX(9300f, duration).SetEase(Ease.Linear);
-    }
-
-    public void StopTurnGaugeAnimation()
-    {
-        turnGauage.rectTransform.DOPause();
-    }
-
-    public void ResetTurnGauge()
-    {
-        turnGauage.rectTransform.DOScaleX(1f, 0f);
-    }
+    //    UIManager.Instance.StopTurnGaugeAnimation();
+    //    UIManager.Instance.ResetTurnGauge();
+    //}
 }

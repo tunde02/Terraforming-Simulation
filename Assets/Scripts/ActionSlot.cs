@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionBundleElement
+public class ActionSlot
 {
     public Action PlacedAction { get; set; }
     public bool IsEmpty { get; set; }
     public bool IsLocked { get; set; }
 
 
-    public ActionBundleElement()
+    public ActionSlot()
     {
-        PlacedAction = new Action(ActionType.Breed);
+        PlacedAction = new Action(ActionType.BREED);
         IsEmpty = true;
         IsLocked = false;
     }
 
-    public ActionBundleElement(Action action)
+    public ActionSlot(Action action)
     {
         PlacedAction = action;
         IsEmpty = false;
         IsLocked = false;
     }
 
-    public ActionBundleElement(Action action, bool isEmpty, bool isLocked)
+    public ActionSlot(Action action, bool isEmpty, bool isLocked)
     {
         PlacedAction = action;
         IsEmpty = isEmpty;

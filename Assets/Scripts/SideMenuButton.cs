@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SideMenuBtn : MonoBehaviour
+
+public class SideMenuButton : MonoBehaviour
 {
-    public SideMenuPanel parentPanel;
-    public RectTransform targetRectTransform;
+    [SerializeField] private SideMenuPanel parentPanel;
+    [SerializeField] private RectTransform targetRectTransform;
 
 
     public void OnClicked()

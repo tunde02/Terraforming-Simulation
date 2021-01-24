@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 68324778}
   - component: {fileID: 68324777}
   m_Layer: 5
-  m_Name: Storage
+  m_Name: DNA Storage Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,7 +420,7 @@ RectTransform:
   m_Children:
   - {fileID: 563408193}
   m_Father: {fileID: 994127515}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -528,7 +528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 104262647}
   m_Layer: 5
-  m_Name: Element Positions
+  m_Name: Slot Positions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 122870232}
   - component: {fileID: 122870231}
   m_Layer: 5
-  m_Name: Action Bundle Details Panel
+  m_Name: Scenario Details Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -802,77 +802,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128018893}
   m_CullTransparentMesh: 0
---- !u!1 &133629397
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 133629398}
-  - component: {fileID: 133629400}
-  - component: {fileID: 133629399}
-  m_Layer: 5
-  m_Name: Turn Gauge
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &133629398
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133629397}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 383313744}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -465, y: 0}
-  m_SizeDelta: {x: 0.1, y: 112}
-  m_Pivot: {x: 0, y: 0.5}
---- !u!114 &133629399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133629397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 578270f67133a3b4ab9f9e34689081f8, type: 2}
-  m_Color: {r: 0.3921569, g: 0.42352945, b: 0.4666667, a: 0.5882353}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &133629400
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133629397}
-  m_CullTransparentMesh: 0
 --- !u!1 &137655830
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,7 +812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 137655831}
   m_Layer: 5
-  m_Name: Action Bundle Details Buttons
+  m_Name: Scenario Details Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -903,7 +832,7 @@ RectTransform:
   - {fileID: 501663618}
   - {fileID: 1528637700}
   m_Father: {fileID: 383313744}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1075,14 +1004,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5539e15a258b13d4280410d675b178af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationText: {fileID: 2024818626}
-  foodText: {fileID: 218494275}
-  DNAText: {fileID: 164177460}
-  powerText: {fileID: 683896649}
-  populationStorageVariationText: {fileID: 176435384}
-  foodStorageVariationText: {fileID: 446559968}
-  DNAStorageVariationText: {fileID: 1858675602}
-  powerStorageVariationText: {fileID: 1641185834}
+  resourceTexts:
+  - {fileID: 2024818626}
+  - {fileID: 218494275}
+  - {fileID: 164177460}
+  - {fileID: 683896649}
+  resourceVariationTexts:
+  - {fileID: 176435384}
+  - {fileID: 446559968}
+  - {fileID: 1858675602}
+  - {fileID: 1641185834}
   variationTime: 2
 --- !u!1 &164177458
 GameObject:
@@ -1248,7 +1179,7 @@ GameObject:
   - component: {fileID: 176435385}
   - component: {fileID: 176435384}
   m_Layer: 5
-  m_Name: Population Storage Variation Text
+  m_Name: Population Variation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,7 +1729,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: SaveActionBundle
+        m_MethodName: SaveScenario
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2232,7 +2163,7 @@ GameObject:
   - component: {fileID: 352213304}
   - component: {fileID: 352213303}
   m_Layer: 5
-  m_Name: Bundle Unlock Button
+  m_Name: Slot Unlock Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2302,7 +2233,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: UnlockBundleSlot
+        m_MethodName: UnlockSlot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2362,7 +2293,7 @@ GameObject:
   - component: {fileID: 367622795}
   - component: {fileID: 367622794}
   m_Layer: 5
-  m_Name: Train Button
+  m_Name: Train Fill Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2432,7 +2363,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: FillBundleElement
+        m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2488,10 +2419,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 383313744}
-  - component: {fileID: 383313746}
   - component: {fileID: 383313745}
   m_Layer: 5
-  m_Name: Action Bundle Panel
+  m_Name: Scenario Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2511,7 +2441,6 @@ RectTransform:
   - {fileID: 2022210169}
   - {fileID: 1085602742}
   - {fileID: 1376922634}
-  - {fileID: 133629398}
   - {fileID: 137655831}
   m_Father: {fileID: 994127515}
   m_RootOrder: 2
@@ -2528,36 +2457,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383313743}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: c978b46503d2728488037626ab41be33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6dc4a8c87cc476f459c88d65c771fe9e, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &383313746
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 383313743}
-  m_CullTransparentMesh: 0
+  slotPrefabs:
+  - {fileID: 561268807438566150, guid: 11cb01841c4d9b84db99990907980391, type: 3}
+  - {fileID: 561268807438566150, guid: 392a1430618015b458a314d49d0a99d7, type: 3}
+  - {fileID: 561268807438566150, guid: 4b589f93ce70f5a4fbb754cdf844e6f8, type: 3}
+  - {fileID: 561268807438566150, guid: 203d6eaa574e89646a5a48371b3b3c9a, type: 3}
+  - {fileID: 561268807438566150, guid: b4a179ca6dff9c34681a50d6f4d7eb69, type: 3}
+  scenarioTransform: {fileID: 1376922634}
+  turnGauage: {fileID: 1395341965}
 --- !u!1 &400792892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2608,7 +2520,7 @@ GameObject:
   - component: {fileID: 412304493}
   - component: {fileID: 412304492}
   m_Layer: 5
-  m_Name: Storage
+  m_Name: Power Storage Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2748,6 +2660,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423919556}
   m_CullTransparentMesh: 0
+--- !u!1 &434477798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 434477800}
+  - component: {fileID: 434477799}
+  - component: {fileID: 434477801}
+  m_Layer: 0
+  m_Name: SceneContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &434477799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434477798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 434477801}
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
+--- !u!4 &434477800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434477798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &434477801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434477798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb4618c1b6a54574785db7294b0d09ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &446559966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2760,7 +2748,7 @@ GameObject:
   - component: {fileID: 446559969}
   - component: {fileID: 446559968}
   m_Layer: 5
-  m_Name: Food Storage Variation Text
+  m_Name: Food Variation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2858,7 +2846,7 @@ Transform:
   - {fileID: 836132097}
   - {fileID: 1085905942}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &466686204
 GameObject:
@@ -2951,7 +2939,7 @@ GameObject:
   - component: {fileID: 496457455}
   - component: {fileID: 496457454}
   m_Layer: 5
-  m_Name: Hunt Button
+  m_Name: Hunt Fill Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3021,7 +3009,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: FillBundleElement
+        m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3103,8 +3091,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -322.9, y: 90}
-  m_SizeDelta: {x: 205, y: 50}
+  m_AnchoredPosition: {x: -327.8, y: 90}
+  m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &501663619
 MonoBehaviour:
@@ -3161,7 +3149,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1085905943}
-        m_MethodName: LoadActionBundleDetailsPanel
+        m_MethodName: LoadScenarioDetailsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3283,7 +3271,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &509771475
 GameObject:
@@ -3298,7 +3286,7 @@ GameObject:
   - component: {fileID: 509771478}
   - component: {fileID: 509771477}
   m_Layer: 5
-  m_Name: Bundle Reset Button
+  m_Name: Scenario Reset Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3368,7 +3356,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: ResetActionBundle
+        m_MethodName: ResetScenario
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3658,7 +3646,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: SaveActionBundle
+        m_MethodName: SaveScenario
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3906,7 +3894,7 @@ GameObject:
   - component: {fileID: 601679340}
   - component: {fileID: 601679339}
   m_Layer: 5
-  m_Name: Storage
+  m_Name: Population Storage Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4765,7 +4753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 765862290}
   m_Layer: 5
-  m_Name: Bundle Presets
+  m_Name: Scenario Preset Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4951,12 +4939,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d94acb6d9ddddb4081080311fb338df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 1613062574}
-  gameManager: {fileID: 2084490143}
-  actionManager: {fileID: 1085905943}
-  turnGauage: {fileID: 133629399}
-  startTurnBtn: {fileID: 1931616743}
-  turnPeriodSecond: 10
 --- !u!1 &849089124
 GameObject:
   m_ObjectHideFlags: 0
@@ -5346,10 +5328,11 @@ RectTransform:
   - {fileID: 1052048058}
   - {fileID: 163754419}
   - {fileID: 383313744}
+  - {fileID: 1395341964}
   - {fileID: 1931616739}
   - {fileID: 79304621}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5368,7 +5351,7 @@ GameObject:
   - component: {fileID: 1002618006}
   - component: {fileID: 1002618005}
   m_Layer: 5
-  m_Name: Storage
+  m_Name: Food Storage Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5592,7 +5575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1051181703}
   m_Layer: 5
-  m_Name: Acitons
+  m_Name: Aciton Details Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5812,15 +5795,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d416811f092d944c8f74f22961fd07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 1613062574}
-  ActionBundleDetailsCanvas: {fileID: 1593835506}
+  scenarioDetailsCanvas: {fileID: 1593835506}
   slotPrefabs:
   - {fileID: 5502200952073704239, guid: 8d526c588d157bf49ad04bfcf0baa1b5, type: 3}
   - {fileID: 5502200952073704239, guid: e0ad8137fc8d9ea4c85c977b630a342a, type: 3}
   - {fileID: 5502200952073704239, guid: e51d5a192c7e18d42b154305f403de79, type: 3}
   - {fileID: 5502200952073704239, guid: 56d9a75631b27d74f8e3930c3f6d5db8, type: 3}
   - {fileID: 5502200952073704239, guid: 86c77f9e735671a4b97c6f0d6a0e5d4c, type: 3}
-  elementPositions:
+  slotPositions:
   - {fileID: 673029719}
   - {fileID: 1571532837}
   - {fileID: 1388348819}
@@ -5835,10 +5817,6 @@ MonoBehaviour:
   - {fileID: 2047112413}
   - {fileID: 1036403719}
   - {fileID: 735719190}
-  notEnoughSlotsWarningWindow: {fileID: 0}
-  noEmptySlotWarningWindow: {fileID: 0}
-  unsavedWarningWindow: {fileID: 0}
-  offset: 3
 --- !u!1 &1096653855
 GameObject:
   m_ObjectHideFlags: 0
@@ -6002,10 +5980,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d88cb5f6427a734da27cbfc447d0986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  populationText: {fileID: 601679339}
-  foodText: {fileID: 1002618005}
-  DNAText: {fileID: 68324777}
-  powerText: {fileID: 412304492}
+  resourceDetailsTexts:
+  - {fileID: 601679339}
+  - {fileID: 1002618005}
+  - {fileID: 68324777}
+  - {fileID: 412304492}
 --- !u!114 &1128587078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6364,7 +6343,7 @@ GameObject:
   - component: {fileID: 1186514869}
   - component: {fileID: 1186514868}
   m_Layer: 5
-  m_Name: Bundle Save Button
+  m_Name: Scenario Save Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6432,7 +6411,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1186514869}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1085905943}
+        m_MethodName: SaveScenario
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1186514869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6967,7 +6957,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1264182638}
   m_Layer: 5
-  m_Name: Aciton Bundle
+  m_Name: Scenario Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7164,7 +7154,7 @@ RectTransform:
   m_Children:
   - {fileID: 237172096}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7181,7 +7171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1376922634}
   m_Layer: 5
-  m_Name: Action Bundle
+  m_Name: Scenario
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7279,6 +7269,80 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388348818}
+  m_CullTransparentMesh: 0
+--- !u!1 &1395341963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1395341964}
+  - component: {fileID: 1395341966}
+  - component: {fileID: 1395341965}
+  m_Layer: 5
+  m_Name: Turn Gauge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1395341964
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395341963}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 994127515}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -465, y: -270}
+  m_SizeDelta: {x: 0.1, y: 112}
+  m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &1395341965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395341963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.3921569, g: 0.42352945, b: 0.4666667, a: 0.5882353}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1395341966
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395341963}
   m_CullTransparentMesh: 0
 --- !u!1 &1416753550
 GameObject:
@@ -7932,7 +7996,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1085905943}
-        m_MethodName: LoadActionBundleDetailsPanel
+        m_MethodName: LoadScenarioDetailsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8414,7 +8478,7 @@ GameObject:
   - component: {fileID: 1593835508}
   - component: {fileID: 1593835507}
   m_Layer: 5
-  m_Name: Action Bundle Details Canvas
+  m_Name: Scenario Details Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8476,7 +8540,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
@@ -8494,7 +8558,7 @@ RectTransform:
   - {fileID: 529401648}
   - {fileID: 122870230}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8544,19 +8608,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0eee278387897449ffd3f82ce6ead1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionManager: {fileID: 1085905943}
-  startTurnBtn: {fileID: 1931616743}
   resourceStatusPanel: {fileID: 163754422}
   resourceDetailsPanel: {fileID: 1128587077}
-  actionBundleDetailsCanvas: {fileID: 1593835506}
-  actionBundlePanel: {fileID: 1376922634}
-  slotPrefabs:
-  - {fileID: 561268807438566150, guid: 11cb01841c4d9b84db99990907980391, type: 3}
-  - {fileID: 561268807438566150, guid: 392a1430618015b458a314d49d0a99d7, type: 3}
-  - {fileID: 561268807438566150, guid: 4b589f93ce70f5a4fbb754cdf844e6f8, type: 3}
-  - {fileID: 561268807438566150, guid: 203d6eaa574e89646a5a48371b3b3c9a, type: 3}
-  - {fileID: 561268807438566150, guid: b4a179ca6dff9c34681a50d6f4d7eb69, type: 3}
-  alertWindow: {fileID: 8825983789081260342, guid: f3616081c7aa1534cac2dbe85e2c47d7,
+  scenarioPanel: {fileID: 383313745}
+  scenarioDetailsPanel: {fileID: 0}
+  scenarioDetailsCanvas: {fileID: 1593835506}
+  alertWindowPrefab: {fileID: 8825983789081260342, guid: f3616081c7aa1534cac2dbe85e2c47d7,
     type: 3}
 --- !u!1 &1627248454
 GameObject:
@@ -8568,7 +8625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1627248455}
   m_Layer: 5
-  m_Name: Total Resource Incomes
+  m_Name: Total Resource Changes Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8610,7 +8667,7 @@ GameObject:
   - component: {fileID: 1641185835}
   - component: {fileID: 1641185834}
   m_Layer: 5
-  m_Name: Power Storage Variation Text
+  m_Name: Power Variation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8878,7 +8935,7 @@ GameObject:
   - component: {fileID: 1732331639}
   - component: {fileID: 1732331638}
   m_Layer: 5
-  m_Name: Evolve Button
+  m_Name: Evolve Fill Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8948,7 +9005,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: FillBundleElement
+        m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9419,7 +9476,7 @@ GameObject:
   - component: {fileID: 1811765081}
   - component: {fileID: 1811765080}
   m_Layer: 5
-  m_Name: Breed Button
+  m_Name: Breed Fill Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9489,7 +9546,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: FillBundleElement
+        m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9548,7 +9605,7 @@ GameObject:
   - component: {fileID: 1858675603}
   - component: {fileID: 1858675602}
   m_Layer: 5
-  m_Name: DNA Storage Variation Text
+  m_Name: DNA Variation Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10070,7 +10127,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 994127515}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10122,10 +10179,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1931616743}
         m_MethodName: OnClicked
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 836132098}
-          m_ObjectArgumentAssemblyTypeName: TurnManager, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -10180,8 +10237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a8adc449f1ed4640a067791dde22f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playBtnImage: {fileID: 21300000, guid: 09756f0f3f2582a42b47717dbed3cf73, type: 3}
-  pauseBtnImage: {fileID: 21300000, guid: 8fba2fd36f5274e44b7687c0de4bef54, type: 3}
+  playingImage: {fileID: 21300000, guid: 8fba2fd36f5274e44b7687c0de4bef54, type: 3}
+  pausedImage: {fileID: 21300000, guid: 09756f0f3f2582a42b47717dbed3cf73, type: 3}
 --- !u!1 &1980394432
 GameObject:
   m_ObjectHideFlags: 0
@@ -10305,7 +10362,7 @@ GameObject:
   - component: {fileID: 2022210171}
   - component: {fileID: 2022210170}
   m_Layer: 5
-  m_Name: Action Slot Text
+  m_Name: Scenario Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10608,7 +10665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2049392179}
   m_Layer: 5
-  m_Name: Resource Status Details
+  m_Name: Resource Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10771,9 +10828,6 @@ MonoBehaviour:
   nowDNAIncome: 0
   nowPowerStorage: 0
   nowPowerIncome: 0
-  uiManager: {fileID: 1613062574}
-  turnManager: {fileID: 836132098}
-  actionManager: {fileID: 1085905943}
 --- !u!1 &2098557465
 GameObject:
   m_ObjectHideFlags: 0
@@ -10787,7 +10841,7 @@ GameObject:
   - component: {fileID: 2098557468}
   - component: {fileID: 2098557467}
   m_Layer: 5
-  m_Name: Bundle Clean Button
+  m_Name: Scenario Clean Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10857,7 +10911,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1085905943}
-        m_MethodName: ResetActionBundle
+        m_MethodName: ClearScenario
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

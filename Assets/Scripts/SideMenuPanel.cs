@@ -7,15 +7,13 @@ using UnityEngine;
 public class SideMenuPanel : MonoBehaviour
 {
     public bool IsOpened { get; set; } = false;
-
-
     private RectTransform rectTransform;
-    private readonly float inScreenPosX = 150f;
-    private readonly float outScreenPosX = 970f;
+    readonly private float openedPosX = 150f;
+    readonly private float closedPosX = 970f;
 
-    private void Start()
+
+    void Awake()
     {
-        IsOpened = false;
         rectTransform = GetComponent<RectTransform>();
     }
 
@@ -24,7 +22,7 @@ public class SideMenuPanel : MonoBehaviour
         IsOpened = true;
 
         rectTransform
-            .DOAnchorPosX(inScreenPosX, 0.5f)
+            .DOAnchorPosX(openedPosX, 0.5f)
             .SetEase(Ease.OutExpo);
     }
     public void CloseSideMenu()
@@ -32,7 +30,7 @@ public class SideMenuPanel : MonoBehaviour
         IsOpened = false;
 
         rectTransform
-            .DOAnchorPosX(outScreenPosX, 0.5f)
+            .DOAnchorPosX(closedPosX, 0.5f)
             .SetEase(Ease.OutExpo);
     }
 }

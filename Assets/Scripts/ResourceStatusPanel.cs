@@ -6,76 +6,55 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ResourceStatusPanel : MonoBehaviour
 {
-    private readonly string[] units = { "", "a", "b", "c", "d", "e", "f" };
-
-    [BoxGroup("Texts")] public Text populationText;
-    [BoxGroup("Texts")] public Text foodText;
-    [BoxGroup("Texts")] public Text DNAText;
-    [BoxGroup("Texts")] public Text powerText;
-
-    [BoxGroup("Variations")] public Text populationStorageVariationText;
-    [BoxGroup("Variations")] public Text foodStorageVariationText;
-    [BoxGroup("Variations")] public Text DNAStorageVariationText;
-    [BoxGroup("Variations")] public Text powerStorageVariationText;
-
-    public float variationTime = 2f;
+    //readonly private string[] units = { "", "a", "b", "c", "d", "e", "f" };
+    readonly private string[] units = { "", "k", "m", "g", "t", "p", "e" };
 
 
-    public void UpdateResourceTexts(Resource[] resources)
+    [SerializeField] private Text[] resourceTexts;
+    [SerializeField] private Text[] resourceVariationTexts;
+    [SerializeField] private float variationTime = 2f;
+
+
+    void Awake()
     {
-        populationText.text = $"{GetOverview(resources[(int)ResourceType.Population].Storage)}";
-        foodText.text       = $"{GetOverview(resources[(int)ResourceType.Food].Storage)}";
-        DNAText.text        = $"{GetOverview(resources[(int)ResourceType.DNA].Storage)}";
-        powerText.text      = $"{GetOverview(resources[(int)ResourceType.Power].Storage)}";
+        Resource.OnStorageSet += SetResourceText;
+        Resource.OnProduced += UpdateResourceText;
+        Resource.OnConsumed += UpdateResourceText;
     }
 
-    public void UpdateResourceTexts(List<Resource> resources)
+    private void SetResourceText(Resource resource)
     {
-        populationText.text = $"{GetOverview(resources[(int)ResourceType.Population].Storage)}";
-        foodText.text = $"{GetOverview(resources[(int)ResourceType.Food].Storage)}";
-        DNAText.text = $"{GetOverview(resources[(int)ResourceType.DNA].Storage)}";
-        powerText.text = $"{GetOverview(resources[(int)ResourceType.Power].Storage)}";
+        resourceTexts[(int)resource.Type].text = $"{GetOverview(resource.Storage)}";
+    }
+
+    private void UpdateResourceText(Resource resource, long prev)
+    {
+        long variation = resource.Storage - prev;
+
+        if (variation != 0)
+        {
+            PlayVariationTextAnimation(resourceVariationTexts[(int)resource.Type], variation);
+        }
     }
 
     private string GetOverview(long number)
     {
-        int storageUnit = 0;
-        double storageCompare = 1000;
+        int unitIndex = 0;
+        double compare = 1000;
 
-        while (number >= storageCompare)
+        while (number >= compare)
         {
-            storageCompare *= 1000;
-            storageUnit++;
+            compare *= 1000;
+            unitIndex++;
         }
 
-        return $"{Math.Floor(number / (storageCompare / 1000) * 10) * 0.1d}{units[storageUnit]}";
+        return $"{Math.Floor(number / (compare / 1000) * 10) * 0.1d}{units[unitIndex]}";
     }
 
-    public void ShowVariationTextsAnimation(List<(ResourceType resourceType, long amount)> variations)
-    {
-        foreach (var (resourceType, amount) in variations)
-        {
-            switch (resourceType)
-            {
-                case ResourceType.Population:
-                    MoveVariationText(populationStorageVariationText, amount);
-                    break;
-                case ResourceType.Food:
-                    MoveVariationText(foodStorageVariationText, amount);
-                    break;
-                case ResourceType.DNA:
-                    MoveVariationText(DNAStorageVariationText, amount);
-                    break;
-                case ResourceType.Power:
-                    MoveVariationText(powerStorageVariationText, amount);
-                    break;
-            }
-        }
-    }
-
-    private void MoveVariationText(Text targetText, long amount)
+    private void PlayVariationTextAnimation(Text targetText, long amount)
     {
         targetText.text = $"{(amount > 0 ? "+" : "")} {GetOverview(amount)}";
         targetText.color = amount > 0 ? Color.green : Color.red;

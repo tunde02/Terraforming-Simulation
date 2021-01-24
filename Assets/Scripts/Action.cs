@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System;
 
-public enum ActionType
-{
-    Breed,
-    Hunt,
-    Evolve,
-    Train
-}
+
+public enum ActionType { BREED, HUNT, EVOLVE, TRAIN }
 
 public class Action
 {
@@ -23,19 +18,19 @@ public class Action
 
         switch (Type)
         {
-            case ActionType.Breed:
+            case ActionType.BREED:
                 Income = 7089471384;
                 Consumption = 0;
                 break;
-            case ActionType.Hunt:
+            case ActionType.HUNT:
                 Income = 10;
                 Consumption = 30;
                 break;
-            case ActionType.Evolve:
+            case ActionType.EVOLVE:
                 Income = 2;
                 Consumption = 50;
                 break;
-            case ActionType.Train:
+            case ActionType.TRAIN:
                 Income = 10;
                 Consumption = 50;
                 break;
@@ -44,22 +39,38 @@ public class Action
         Weight = 1.0;
     }
 
-    public List<(ResourceType resourceType, long amount)> PerformAction(Resource necessaryResource, Resource targetResource)
+    public void PerformAction(List<Resource> resources)
     {
-        var variations = new List<(ResourceType resourceType, long amount)>();
         long actualIncome = (long)(Income * Weight);
+        Resource consumedResource = null;
+        Resource producedResource = null;
 
-        necessaryResource.Storage -= Consumption;
-        targetResource.Storage += actualIncome;
+        switch (Type)
+        {
+            case ActionType.BREED:
+                consumedResource = resources[0];
+                producedResource = resources[(int)Type];
+                break;
+            case ActionType.HUNT:
+                consumedResource = resources[0];
+                producedResource = resources[(int)Type];
+                break;
+            case ActionType.EVOLVE:
+                consumedResource = resources[0];
+                producedResource = resources[(int)Type];
+                break;
+            case ActionType.TRAIN:
+                consumedResource = resources[0];
+                producedResource = resources[(int)Type];
+                break;
+        }
 
-        variations.Add((necessaryResource.resourceType, -Consumption));
-        variations.Add((targetResource.resourceType, actualIncome));
-
-        return variations;
+        consumedResource.Consume(Consumption);
+        producedResource.Produce(actualIncome);
     }
 
-    public bool IsPerformable(Resource necessaryResource)
+    public bool IsPerformable(Resource consumedResource)
     {
-        return necessaryResource.Storage - Consumption > 0;
+        return consumedResource.Storage - Consumption > 0;
     }
 }

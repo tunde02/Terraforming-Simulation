@@ -23,7 +23,7 @@ public class TurnManager : MonoBehaviour
 
     void Start()
     {
-        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TurnPeriod);
+        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
         Turn.OnTurnStatusChanged += ManageTurn;
     }
 
@@ -46,7 +46,7 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TurnPeriod)
+        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD)
         {
             Status = TurnStatus.PLAYING
         };

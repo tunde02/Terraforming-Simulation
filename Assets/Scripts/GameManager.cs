@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowPowerIncome;
 
     public List<Resource> Resources { get; set; }
-    public float TurnPeriod { get; } = 10;
-    public int SlotSize { get; } = 14;
+    public float TURNPERIOD { get; } = 10;
+    public int SLOTSIZE { get; } = 14;
     public int LockedIndex { get; set; } = 10;
     
 

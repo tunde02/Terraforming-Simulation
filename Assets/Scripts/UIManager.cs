@@ -36,26 +36,57 @@ public class UIManager : MonoBehaviour
         {
             case "No More Empty Slot":
                 alertContent.text = "슬롯이 가득 찼습니다.";
+
                 leftButton.gameObject.SetActive(false);
+
                 rightButton.GetComponentInChildren<Text>().text = "확인";
                 rightButton.onClick.AddListener(() => {
                     Destroy(alertWindow);
                 });
                 break;
             case "Not Enough Slots":
-                alertContent.text =  "슬롯이 다 채워지지 않았습니다.\n저장하지 않고 나가시겠습니까?";
+                alertContent.text = "슬롯이 다 채워지지 않았습니다.";
+
+                leftButton.gameObject.SetActive(false);
+
+                rightButton.GetComponentInChildren<Text>().text = "확인";
+                rightButton.onClick.AddListener(() => {
+                    Destroy(alertWindow);
+                });
+                break;
+            case "Scenario Unsaved":
+                alertContent.text = "시나리오가 저장되지 않았습니다.\n시나리오를 저장하지 않고 창을 닫으시겠습니까?";
+                alertContent.fontSize = 24;
+
                 leftButton.onClick.AddListener(() => {
                     actionManager.ResetScenario();
                     scenarioDetailsCanvas.SetActive(false);
                     Destroy(alertWindow);
                 });
+
                 rightButton.onClick.AddListener(() => {
                     Destroy(alertWindow);
                 });
                 break;
-            case "Unsaved Scenario":
-                break;
             case "Impossible Scenario":
+                alertContent.text = "불가능한 시나리오입니다.";
+
+                leftButton.gameObject.SetActive(false);
+
+                rightButton.GetComponentInChildren<Text>().text = "확인";
+                rightButton.onClick.AddListener(() => {
+                    Destroy(alertWindow);
+                });
+                break;
+            case "Saved Successfully":
+                alertContent.text = "시나리오가 저장되었습니다.";
+
+                leftButton.gameObject.SetActive(false);
+
+                rightButton.GetComponentInChildren<Text>().text = "확인";
+                rightButton.onClick.AddListener(() => {
+                    Destroy(alertWindow);
+                });
                 break;
             default:
                 Debug.LogError("Invalid alertType : UIManager.cs - ShowAlert()");

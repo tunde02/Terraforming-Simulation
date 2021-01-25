@@ -652,6 +652,7 @@ GameObject:
   - component: {fileID: 122870230}
   - component: {fileID: 122870232}
   - component: {fileID: 122870231}
+  - component: {fileID: 122870233}
   m_Layer: 5
   m_Name: Scenario Details Panel
   m_TagString: Untagged
@@ -724,6 +725,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122870229}
   m_CullTransparentMesh: 0
+--- !u!114 &122870233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122870229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a18901ac7781f499e124f526964671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scenarioDetailsCanvas: {fileID: 1593835506}
+  slotPrefabs:
+  - {fileID: 5502200952073704239, guid: 8d526c588d157bf49ad04bfcf0baa1b5, type: 3}
+  - {fileID: 5502200952073704239, guid: e0ad8137fc8d9ea4c85c977b630a342a, type: 3}
+  - {fileID: 5502200952073704239, guid: e51d5a192c7e18d42b154305f403de79, type: 3}
+  - {fileID: 5502200952073704239, guid: 56d9a75631b27d74f8e3930c3f6d5db8, type: 3}
+  - {fileID: 5502200952073704239, guid: 86c77f9e735671a4b97c6f0d6a0e5d4c, type: 3}
+  slotPositions:
+  - {fileID: 673029719}
+  - {fileID: 1571532837}
+  - {fileID: 1388348819}
+  - {fileID: 297181765}
+  - {fileID: 112656479}
+  - {fileID: 652077198}
+  - {fileID: 1901779106}
+  - {fileID: 1246656754}
+  - {fileID: 1255651141}
+  - {fileID: 156440391}
+  - {fileID: 849089125}
+  - {fileID: 2047112413}
+  - {fileID: 1036403719}
+  - {fileID: 735719190}
 --- !u!1 &128018893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,8 +1763,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: SaveScenario
+      - m_Target: {fileID: 122870233}
+        m_MethodName: CloseScenarioDetailsWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2231,18 +2266,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 352213304}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: UnlockSlot
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &352213304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2362,7 +2386,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
@@ -3008,7 +3032,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
@@ -3147,17 +3171,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: LoadScenarioDetailsPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 836132098}
         m_MethodName: PauseTurn
@@ -3355,7 +3368,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: ResetScenario
         m_Mode: 1
         m_Arguments:
@@ -3645,8 +3658,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: SaveScenario
+      - m_Target: {fileID: 122870233}
+        m_MethodName: CloseScenarioDetailsWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6412,7 +6425,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: SaveScenario
         m_Mode: 1
         m_Arguments:
@@ -6957,7 +6970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1264182638}
   m_Layer: 5
-  m_Name: Scenario Panel
+  m_Name: Slot List Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7995,17 +8008,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: LoadScenarioDetailsPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 836132098}
         m_MethodName: PauseTurn
         m_Mode: 1
@@ -8611,7 +8613,7 @@ MonoBehaviour:
   resourceStatusPanel: {fileID: 163754422}
   resourceDetailsPanel: {fileID: 1128587077}
   scenarioPanel: {fileID: 383313745}
-  scenarioDetailsPanel: {fileID: 0}
+  scenarioDetailsPanel: {fileID: 122870233}
   scenarioDetailsCanvas: {fileID: 1593835506}
   alertWindowPrefab: {fileID: 8825983789081260342, guid: f3616081c7aa1534cac2dbe85e2c47d7,
     type: 3}
@@ -9004,7 +9006,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
@@ -9545,7 +9547,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
+      - m_Target: {fileID: 122870233}
         m_MethodName: FillSlot
         m_Mode: 3
         m_Arguments:
@@ -10910,8 +10912,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1085905943}
-        m_MethodName: ClearScenario
+      - m_Target: {fileID: 122870233}
+        m_MethodName: ClearSlots
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

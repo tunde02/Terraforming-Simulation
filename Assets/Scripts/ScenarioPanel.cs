@@ -30,7 +30,7 @@ public class ScenarioPanel : MonoBehaviour
     void Awake()
     {
         Turn.OnTurnStatusChanged += DealTurnGauge;
-        Turn.OnScenarioChanged += UpdateScenarioSlotObjects;
+        Turn.OnScenarioChanged += UpdateSlotObjectList;
     }
 
     void Start()
@@ -93,7 +93,7 @@ public class ScenarioPanel : MonoBehaviour
         turnGauage.rectTransform.DOScaleX(1f, 0f);
     }
 
-    public void UpdateScenarioSlotObjects(Turn turn)
+    public void UpdateSlotObjectList(Turn turn)
     {
         float slotWidth = (slotEndX - slotStartX - (turn.LockedIndex - 1) * slotOffset) / turn.LockedIndex;
 

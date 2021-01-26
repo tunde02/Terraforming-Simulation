@@ -5,18 +5,23 @@ using Sirenix.OdinInspector;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 
 public class ResourceStatusPanel : MonoBehaviour
 {
-    //readonly private string[] units = { "", "a", "b", "c", "d", "e", "f" };
-    readonly private string[] units = { "", "k", "m", "g", "t", "p", "e" };
-
-
     [SerializeField] private Text[] resourceTexts;
     [SerializeField] private Text[] resourceVariationTexts;
     [SerializeField] private float variationTime = 2f;
 
+    private GameManager gameManager;
+
+
+    [Inject]
+    public void Construct(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
+    }
 
     void Awake()
     {
@@ -51,7 +56,7 @@ public class ResourceStatusPanel : MonoBehaviour
             unitIndex++;
         }
 
-        return $"{Math.Floor(number / (compare / 1000) * 10) * 0.1d}{units[unitIndex]}";
+        return $"{Math.Floor(number / (compare / 1000) * 10) * 0.1d}{gameManager.UNIT[unitIndex]}";
     }
 
     private void PlayVariationTextAnimation(Text targetText, long amount)

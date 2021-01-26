@@ -759,6 +759,11 @@ MonoBehaviour:
   - {fileID: 2047112413}
   - {fileID: 1036403719}
   - {fileID: 735719190}
+  resourceChangeTexts:
+  - {fileID: 1143273959}
+  - {fileID: 1719287685}
+  - {fileID: 466686206}
+  - {fileID: 737785994}
 --- !u!1 &128018893
 GameObject:
   m_ObjectHideFlags: 0

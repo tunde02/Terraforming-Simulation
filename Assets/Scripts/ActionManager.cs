@@ -10,6 +10,9 @@ public class ActionManager : MonoBehaviour
     [SerializeField] private GameObject[] slotPrefabs;
     [SerializeField] private Transform[] slotPositions;
 
+    public delegate void ScenarioHandler(List<ActionSlot> scenario);
+    public static event ScenarioHandler OnScenarioChanged;
+
     public List<Action> ACTION { get; private set; } = new List<Action>(4) {
             new Action(ActionType.BREED),
             new Action(ActionType.HUNT),
@@ -59,17 +62,23 @@ public class ActionManager : MonoBehaviour
     {
         Scenario[index].PlacedAction = ACTION[actionType];
         Scenario[index].IsEmpty = false;
+
+        OnScenarioChanged(Scenario);
     }
 
     public void RemoveSlotAt(int index)
     {
         Scenario[index].PlacedAction = ACTION[0];
         Scenario[index].IsEmpty = true;
+
+        OnScenarioChanged(Scenario);
     }
 
     public void ResetScenario()
     {
         Scenario = PrevScenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked));
+
+        OnScenarioChanged(Scenario);
     }
 
     //public bool IsPerformable(List<Resource> resources)

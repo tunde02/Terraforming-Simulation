@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
     [SerializeField] private GameObject scenarioDetailsCanvas;
     [SerializeField] private GameObject[] slotPrefabs;
     [SerializeField] private Transform[] slotPositions;
+    [SerializeField] private Text[] resourceChangeTexts;
 
     private GameManager gameManager;
     private ActionManager actionManager;
@@ -29,6 +31,8 @@ public class ScenarioDetailsPanel : MonoBehaviour
     void Awake()
     {
         InitSlotObjectList(gameManager.LockedIndex, gameManager.SLOTSIZE);
+
+        ActionManager.OnScenarioChanged += UpdateResourceChangeTexts;
     }
 
     void OnEnable()
@@ -36,6 +40,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
         actionManager.SavePrevScenario();
 
         LoadSlotObjectList(actionManager.Scenario);
+        UpdateResourceChangeTexts(actionManager.Scenario);
     }
 
     private void InitSlotObjectList(int lockedIndex, int slotSize)
@@ -92,7 +97,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
             actionManager.InsertSlot(top, actionType);
 
             isSaved = false;
-            top++;
+            UpdateTop();
         }
     }
 
@@ -150,7 +155,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
         }
 
         isSaved = false;
-        top = 0;
+        UpdateTop();
     }
 
     public void ResetScenario()
@@ -205,4 +210,42 @@ public class ScenarioDetailsPanel : MonoBehaviour
 
     //    LockedIndex++;
     //}
+
+    private void UpdateResourceChangeTexts(List<ActionSlot> scenario)
+    {
+        long[] changes = new long[4];
+
+        for (int i=0; i<gameManager.LockedIndex; i++)
+        {
+            if (scenario[i].IsEmpty) continue;
+
+            var placedAction = scenario[i].PlacedAction;
+
+            changes[(int)placedAction.Type] += placedAction.Income;
+            changes[0] -= placedAction.Consumption;
+        }
+
+        for (int i=0; i<4; i++)
+        {
+            resourceChangeTexts[i].text = $"{(changes[i] > 0 ? "+" : "")} {GetOverview(changes[i])}";
+
+            if (changes[i] < 0) resourceChangeTexts[i].color = Color.red;
+            else if (changes[i] == 0) resourceChangeTexts[i].color = Color.black;
+            else resourceChangeTexts[i].color = new Color(0, 188 / 255f, 21 / 255f);
+        }
+    }
+
+    private string GetOverview(long number)
+    {
+        int unitIndex = 0;
+        double compare = 1000;
+
+        while (number >= compare)
+        {
+            compare *= 1000;
+            unitIndex++;
+        }
+
+        return $"{Math.Floor(number / (compare / 1000) * 10) * 0.1d}{gameManager.UNIT[unitIndex]}";
+    }
 }

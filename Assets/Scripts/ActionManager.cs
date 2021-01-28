@@ -23,6 +23,8 @@ public class ActionManager : MonoBehaviour
     public List<ActionSlot> PrevScenario { get; private set; }
     private GameManager gameManager;
     private UIManager uiManager;
+    private readonly double[] blockWeight = { 1.0, 1.1, 1.2 };
+    private readonly int blockStackLimit = 2;
 
 
     [Inject]
@@ -35,6 +37,7 @@ public class ActionManager : MonoBehaviour
     void Awake()
     {
         InitScenario();
+        UpdateSlotWeights();
     }
 
     private void InitScenario()
@@ -63,6 +66,7 @@ public class ActionManager : MonoBehaviour
         Scenario[index].PlacedAction = ACTION[actionType];
         Scenario[index].IsEmpty = false;
 
+        UpdateSlotWeights();
         OnScenarioChanged(Scenario);
     }
 
@@ -71,6 +75,7 @@ public class ActionManager : MonoBehaviour
         Scenario[index].PlacedAction = ACTION[0];
         Scenario[index].IsEmpty = true;
 
+        UpdateSlotWeights();
         OnScenarioChanged(Scenario);
     }
 
@@ -78,6 +83,19 @@ public class ActionManager : MonoBehaviour
     {
         Scenario = PrevScenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked));
 
+        UpdateSlotWeights();
+        OnScenarioChanged(Scenario);
+    }
+
+    public void ClearScenario()
+    {
+        foreach (var slot in Scenario)
+        {
+            slot.PlacedAction = ACTION[0];
+            slot.IsEmpty = true;
+        }
+
+        UpdateSlotWeights();
         OnScenarioChanged(Scenario);
     }
 
@@ -97,4 +115,43 @@ public class ActionManager : MonoBehaviour
 
     //    return true;
     //}
+
+    private void UpdateSlotWeights()
+    {
+        int[] stacks = new int[gameManager.LockedIndex];
+        ActionType nowAction, nextAction;
+        int blockStack = 0;
+
+        for (int i = 1; i < gameManager.LockedIndex; i++)
+        {
+            nowAction = Scenario[i - 1].PlacedAction.Type;
+            nextAction = Scenario[i].PlacedAction.Type;
+
+            if (nowAction != nextAction || Scenario[i].IsEmpty || blockStack >= blockStackLimit)
+            {
+                blockStack = 0;
+            }
+            else if (!Scenario[i - 1].IsEmpty && nowAction == nextAction)
+            {
+                blockStack++;
+            }
+
+            stacks[i] = blockStack;
+        }
+
+        for (int i = stacks.Length - 1; i >= 0; i--)
+        {
+            for (int j = 0; j <= stacks[i]; j++)
+            {
+                Scenario[i - j].BlockWeight = blockWeight[stacks[i]];
+            }
+
+            i -= stacks[i];
+        }
+
+        //string slotWeights = "";
+        //foreach (var slot in Scenario)
+        //    slotWeights += slot.BlockWeight + " / ";
+        //Debug.Log(slotWeights);
+    }
 }

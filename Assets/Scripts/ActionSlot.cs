@@ -7,6 +7,7 @@ public class ActionSlot
     public Action PlacedAction { get; set; }
     public bool IsEmpty { get; set; }
     public bool IsLocked { get; set; }
+    public double BlockWeight { get; set; } = 1.0;
 
 
     public ActionSlot()

@@ -19,20 +19,20 @@ public class Action
         switch (Type)
         {
             case ActionType.BREED:
-                Income = 7089471384;
+                Income = 100;
                 Consumption = 0;
                 break;
             case ActionType.HUNT:
                 Income = 10;
-                Consumption = 30;
+                Consumption = 15;
                 break;
             case ActionType.EVOLVE:
                 Income = 2;
-                Consumption = 50;
+                Consumption = 25;
                 break;
             case ActionType.TRAIN:
                 Income = 10;
-                Consumption = 50;
+                Consumption = 25;
                 break;
         }
 

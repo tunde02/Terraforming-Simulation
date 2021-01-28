@@ -150,9 +150,9 @@ public class ScenarioDetailsPanel : MonoBehaviour
                 Destroy(slotObjectList[i]);
                 slotObjectList[i] = null;
             }
-
-            actionManager.RemoveSlotAt(i);
         }
+
+        actionManager.ClearScenario();
 
         isSaved = false;
         UpdateTop();
@@ -161,7 +161,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
     public void ResetScenario()
     {
         actionManager.ResetScenario();
-
+        
         LoadSlotObjectList(actionManager.PrevScenario);
 
         isSaved = true;
@@ -221,13 +221,14 @@ public class ScenarioDetailsPanel : MonoBehaviour
 
             var placedAction = scenario[i].PlacedAction;
 
-            changes[(int)placedAction.Type] += placedAction.Income;
+            changes[(int)placedAction.Type] += (long)(placedAction.Income * scenario[i].BlockWeight);
             changes[0] -= placedAction.Consumption;
         }
 
         for (int i=0; i<4; i++)
         {
             resourceChangeTexts[i].text = $"{(changes[i] > 0 ? "+" : "")} {GetOverview(changes[i])}";
+            //resourceChangeTexts[i].text = $"{(changes[i] > 0 ? "+" : "")} {changes[i]}";
 
             if (changes[i] < 0) resourceChangeTexts[i].color = Color.red;
             else if (changes[i] == 0) resourceChangeTexts[i].color = Color.black;

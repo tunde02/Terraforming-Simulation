@@ -31,8 +31,7 @@ public class TurnManager : MonoBehaviour
     {
         if (NowTurn.Status == TurnStatus.PLAYING)
         {
-            NowTurn.PlayTime += Time.time - prevTime;
-            prevTime = Time.time;
+            NowTurn.PlayTime += Time.deltaTime;
         }
     }
 

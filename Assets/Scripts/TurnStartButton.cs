@@ -38,7 +38,7 @@ public class TurnStartButton : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid TurnStatus change : TurnStartButton.cs - ");
+            Debug.LogError("Invalid TurnStatus change : TurnStartButton.cs - ChangeButtonImage()");
         }
     }
 

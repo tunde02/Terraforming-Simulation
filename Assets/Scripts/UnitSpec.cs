@@ -14,7 +14,6 @@ public class UnitSpec
     public int DefensePower { get; set; }
     public float Speed { get; set; }
     public int UnitSize { get; set; }
-    public Barracks TargetBarracks { get; set; }
     public List<Image> DamagedImageList { get; set; }
 
 
@@ -26,11 +25,10 @@ public class UnitSpec
         DefensePower = 2;
         Speed = 5f;
         UnitSize = 10;
-        TargetBarracks = null;
         DamagedImageList = null;
     }
 
-    public UnitSpec(Faction belongedFaction, int hp, int attackPower, int defensePower, float speed, int unitSize, Barracks targetBarracks, List<Image> damagedImageList)
+    public UnitSpec(Faction belongedFaction, int hp, int attackPower, int defensePower, float speed, int unitSize, List<Image> damagedImageList)
     {
         BelongedFaction = belongedFaction;
         Hp = hp;
@@ -38,7 +36,6 @@ public class UnitSpec
         DefensePower = defensePower;
         Speed = speed;
         UnitSize = unitSize;
-        TargetBarracks = targetBarracks;
         DamagedImageList = damagedImageList;
     }
 }

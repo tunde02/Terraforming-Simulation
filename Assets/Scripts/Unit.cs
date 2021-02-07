@@ -12,6 +12,8 @@ public class Unit : MonoBehaviour
 
 
     public UnitSpec Spec { get; set; }
+    public Barracks BelongedBarracks { get; set; }
+    public Barracks TargetBarracks { get; set; }
     private RectTransform rectTransform;
 
 
@@ -22,7 +24,6 @@ public class Unit : MonoBehaviour
 
     public void MoveTo(Vector2 targetPosition)
     {
-        Debug.Log($"Move to {targetPosition}");
         rectTransform
             .DOAnchorPos(targetPosition, 5f)
             .SetEase(Ease.Linear);
@@ -30,11 +31,23 @@ public class Unit : MonoBehaviour
 
     public void MoveToTarget()
     {
-        Debug.Log($"Move to target {Spec.TargetBarracks.transform}");
+        //rectTransform
+        //.DOAnchorPos(TargetBarracks.GetComponent<RectTransform>().anchoredPosition, 5f)
+        //.SetEase(Ease.Linear);
+        StartCoroutine(Move());
+    }
 
-        rectTransform
-            .DOAnchorPos(Spec.TargetBarracks.GetComponent<RectTransform>().anchoredPosition, 5f)
-            .SetEase(Ease.Linear);
+    private IEnumerator Move()
+    {
+        while (Spec.Hp > 0 && TargetBarracks)
+        {
+            //rectTransform
+            //.DOAnchorPos(TargetBarracks.GetComponent<RectTransform>().anchoredPosition, 5f)
+            //.SetEase(Ease.Linear);
+            //Debug.Log($"Target : {TargetBarracks.GetInstanceID()}, {TargetBarracks.GetComponent<RectTransform>().anchoredPosition}");
+            rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, TargetBarracks.GetComponent<RectTransform>().anchoredPosition, 1.5f);
+            yield return new WaitForSeconds(0.008f);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,7 +66,6 @@ public class Unit : MonoBehaviour
 
     public void OnDamaged(int attackPower)
     {
-        Debug.Log("boom!!");
         Spec.Hp -= attackPower * (100 - Spec.DefensePower) / 100;
         hpText.text = Spec.Hp.ToString();
 

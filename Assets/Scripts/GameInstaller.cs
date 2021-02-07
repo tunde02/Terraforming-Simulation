@@ -9,5 +9,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<UIManager>().FromInstance(FindObjectOfType<UIManager>()).NonLazy();
         Container.Bind<TurnManager>().FromInstance(FindObjectOfType<TurnManager>()).NonLazy();
         Container.Bind<ActionManager>().FromInstance(FindObjectOfType<ActionManager>()).NonLazy();
+        Container.Bind<BattleManager>().FromInstance(FindObjectOfType<BattleManager>()).NonLazy();
     }
 }

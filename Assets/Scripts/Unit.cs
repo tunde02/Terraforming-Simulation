@@ -75,4 +75,9 @@ public class Unit : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnDestroy()
+    {
+        BelongedBarracks.RemoveUnitFromList(this);
+    }
 }

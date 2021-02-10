@@ -18,8 +18,11 @@ public class Barracks : MonoBehaviour
     [SerializeField] private Text hpText;
 
 
-    [BoxGroup("Value")] public Faction BelongedFaction;
-    [BoxGroup("Value")] public int Hp;
+    [BoxGroup("Values")] public Faction BelongedFaction;
+    [BoxGroup("Values")] public int Hp;
+    [BoxGroup("Unit Spec")] public int unitHp;
+    [BoxGroup("Unit Spec")] public int unitAttackPower;
+    [BoxGroup("Unit Spec")] public int unitDefensePower;
     public int DefensePower { get; set; }
     public Barracks TargetBarracks { get; set; }
     public RectTransform TargetBarracksPosition { get; set; }
@@ -27,7 +30,7 @@ public class Barracks : MonoBehaviour
     public Unit ProducingUnit { get; set; }
 
     private BattleManager battleManager;
-    private UnitSpec producingUnitSpec;
+    public UnitSpec ProducingUnitSpec { get; set; }
     private List<Image> damagedImageList;
     private float timeStack;
     private List<Unit> unitList;
@@ -41,12 +44,12 @@ public class Barracks : MonoBehaviour
 
     void Awake()
     {
-        Hp = 100;
+        //Hp = 100;
         DefensePower = 10;
         TargetBarracks = null;
         //TargetBarracksPosition = target1.GetComponent<RectTransform>();
         UnitProducePeriod = 1f;
-        producingUnitSpec = new UnitSpec(BelongedFaction, 100, 50, 0, 10f, 10, null);
+        ProducingUnitSpec = new UnitSpec(BelongedFaction, unitHp, unitAttackPower, unitDefensePower, 10f, 10, null);
         unitList = new List<Unit>();
 
         hpText.text = Hp.ToString();
@@ -83,13 +86,13 @@ public class Barracks : MonoBehaviour
         //var unit = Instantiate(unitPrefab, transform).GetComponent<Unit>();
 
         unit.Spec = new UnitSpec(
-            producingUnitSpec.BelongedFaction,
-            producingUnitSpec.Hp,
-            producingUnitSpec.AttackPower,
-            producingUnitSpec.DefensePower,
-            producingUnitSpec.Speed,
-            producingUnitSpec.UnitSize,
-            producingUnitSpec.DamagedImageList
+            ProducingUnitSpec.BelongedFaction,
+            ProducingUnitSpec.Hp,
+            ProducingUnitSpec.AttackPower,
+            ProducingUnitSpec.DefensePower,
+            ProducingUnitSpec.Speed,
+            ProducingUnitSpec.UnitSize,
+            ProducingUnitSpec.DamagedImageList
         );
         unit.BelongedBarracks = this;
         unit.TargetBarracks = TargetBarracks;
@@ -99,6 +102,11 @@ public class Barracks : MonoBehaviour
 
         //unit.MoveTo(TargetBarracksPosition.anchoredPosition);
         unit.MoveToTarget();
+    }
+
+    public void RemoveUnitFromList(Unit unit)
+    {
+        unitList.Remove(unit);
     }
 
     public void OnDamaged(int attackPower)
@@ -115,6 +123,7 @@ public class Barracks : MonoBehaviour
     private void ChangeTargetBarracks(Barracks targetBarracks)
     {
         TargetBarracks = targetBarracks;
+
         foreach (Unit unit in unitList)
         {
             unit.TargetBarracks = TargetBarracks;

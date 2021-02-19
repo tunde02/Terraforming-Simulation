@@ -23,23 +23,21 @@ public class TurnStartButton : MonoBehaviour
     void Awake()
     {
         buttonImage = GetComponent<Image>();
-        Turn.OnTurnStatusChanged += ChangeButtonImage;
+
+        Turn.OnTurnStarted += ChangeButtonImageToPlaying;
+        Turn.OnTurnPaused += ChangeButtonImageToPaused;
+        Turn.OnTurnResumed += ChangeButtonImageToPlaying;
+        Turn.OnTurnFinished += ChangeButtonImageToPaused;
     }
 
-    private void ChangeButtonImage(Turn turn, TurnStatus prevStatus)
+    private void ChangeButtonImageToPlaying()
     {
-        if (turn.Status == TurnStatus.WAITING || turn.Status == TurnStatus.PAUSED)
-        {
-            buttonImage.sprite = pausedImage;
-        }
-        else if (turn.Status == TurnStatus.PLAYING)
-        {
-            buttonImage.sprite = playingImage;
-        }
-        else
-        {
-            Debug.LogError("Invalid TurnStatus change : TurnStartButton.cs - ChangeButtonImage()");
-        }
+        buttonImage.sprite = playingImage;
+    }
+
+    private void ChangeButtonImageToPaused()
+    {
+        buttonImage.sprite = pausedImage;
     }
 
     public void OnClicked()

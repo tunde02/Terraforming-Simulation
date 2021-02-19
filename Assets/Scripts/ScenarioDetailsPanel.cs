@@ -30,8 +30,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
 
     void Awake()
     {
-        InitSlotObjectList(gameManager.LockedIndex, gameManager.SLOTSIZE);
-
+        InitSlotObjectList();
         ActionManager.OnScenarioChanged += UpdateResourceChangeTexts;
     }
 
@@ -43,8 +42,11 @@ public class ScenarioDetailsPanel : MonoBehaviour
         UpdateResourceChangeTexts(actionManager.Scenario);
     }
 
-    private void InitSlotObjectList(int lockedIndex, int slotSize)
+    private void InitSlotObjectList()
     {
+        int lockedIndex = gameManager.LockedIndex;
+        int slotSize = gameManager.SLOTSIZE;
+
         slotObjectList = new List<GameObject>(14);
 
         for (int i = 0; i < lockedIndex; i++)

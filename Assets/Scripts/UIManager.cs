@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Zenject;
 
 
-public class UIManager : MonoBehaviour
+public class UIManager : BaseManager
 {
     [SerializeField] private ResourceStatusPanel resourceStatusPanel;
     [SerializeField] private ResourceDetailsPanel resourceDetailsPanel;
@@ -15,13 +15,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject scenarioDetailsCanvas;
     [SerializeField] private GameObject alertWindowPrefab;
 
+    private GameManager gameManager;
     private ActionManager actionManager;
 
 
     [Inject]
-    public void Construct(ActionManager actionManager)
+    public void Construct(GameManager gameManager, ActionManager actionManager)
     {
+        this.gameManager = gameManager;
         this.actionManager = actionManager;
+    }
+
+    public override void Initialize()
+    {
+        // Do nothing yet
     }
 
     public void ShowAlertWindow(string alertType)

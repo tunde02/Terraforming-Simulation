@@ -6,7 +6,7 @@ using Zenject;
 
 public enum Tactic { LINEAR, RANDOM, HIGHEST_HP, LOWEST_HP, STRONGEST, WEAKEST }
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : BaseManager
 {
     public List<Barracks> humanBarracksGroup;
     public List<Barracks> alienBarracksGroup;
@@ -15,29 +15,23 @@ public class BattleManager : MonoBehaviour
 
 
     public Battle NowBattle { get; set; }
+    private GameManager gameManager;
     private TurnManager turnManager;
 
 
     [Inject]
-    public void Construct(TurnManager turnManager)
+    public void Construct(GameManager gameManager, TurnManager turnManager)
     {
+        this.gameManager = gameManager;
         this.turnManager = turnManager;
     }
 
-    void Awake()
+    public override void Initialize()
     {
         NowBattle = new Battle(Faction.HUMAN, Faction.EXTERRAINS, null);
         //tactic = Tactic.RANDOM;
-    }
-
-    void Start()
-    {
+        
         InitTargetBarracks();
-    }
-
-    void Update()
-    {
-
     }
 
     private void InitTargetBarracks()

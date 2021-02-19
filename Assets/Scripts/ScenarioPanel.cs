@@ -6,11 +6,16 @@ using UnityEngine.UI;
 using Zenject;
 
 
+/*
+ * Turn의 status 변화에 따른 event에 등록하는 순서 관련해서
+ * ScenarioPanel이 먼저 실행해야 하는 메소드가 있고, TurnManager가 먼저 실행해야 하는 메소드가 있어
+ * event 등록을 Awake()에서도 하고 Start()에서도 한 상황임
+ */
 public class ScenarioPanel : MonoBehaviour
 {
     [SerializeField] private GameObject[] slotPrefabs;
     [SerializeField] private Transform scenarioTransform;
-    [SerializeField] private Image turnGauage;
+    [SerializeField] private Image turnGauge;
 
     readonly private float slotStartX   = -460;
     readonly private float slotEndX     = 460;
@@ -18,28 +23,40 @@ public class ScenarioPanel : MonoBehaviour
     readonly private float slotHeight   = 110;
     readonly private float slotOffset   = 8;
     private GameManager gameManager;
+    private TurnManager turnManager;
     private List<GameObject> slotObjectList;
 
 
     [Inject]
-    public void Construct(GameManager gameManager)
+    public void Construct(GameManager gameManager, TurnManager turnManager)
     {
         this.gameManager = gameManager;
+        this.turnManager = turnManager;
     }
 
     void Awake()
     {
-        Turn.OnTurnStatusChanged += DealTurnGauge;
+        slotObjectList = new List<GameObject>();
+
         Turn.OnScenarioChanged += UpdateSlotObjectList;
+        Turn.OnTurnFinished += ResetTurnGauge;
     }
 
     void Start()
     {
-        InitSlotList();
+        
+
+        Turn.OnTurnStarted += PlayTurnGauageAnimation;
+        Turn.OnTurnPaused += StopTurnGaugeAnimation;
+        Turn.OnTurnResumed += PlayTurnGauageAnimation;
+        
+        //InitSlotList();
     }
 
     private void InitSlotList()
     {
+        // 필요없을듯
+
         int lockedIndex = gameManager.LockedIndex;
         float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
 
@@ -53,58 +70,80 @@ public class ScenarioPanel : MonoBehaviour
         }
     }
 
-    private void DealTurnGauge(Turn turn, TurnStatus prevStatus)
-    {
-        if (prevStatus == TurnStatus.WAITING && turn.Status == TurnStatus.PLAYING)
-        {
-            PlayTurnGauageAnimation(turn.Period);
-        }
-        else if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.PAUSED)
-        {
-            StopTurnGaugeAnimation();
-        }
-        else if (prevStatus == TurnStatus.PAUSED && turn.Status == TurnStatus.PLAYING)
-        {
-            PlayTurnGauageAnimation(turn.Period - turn.PlayTime);
-        }
-        else if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.WAITING)
-        {
-            ResetTurnGauge();
-        }
-        else
-        {
-            Debug.LogError("Invalid TurnStatus change : ScenarioPanel.cs - DealTurnGauge()");
-            Debug.LogError($"{prevStatus} -> {turn.Status}");
-        }
-    }
+    //private void DealTurnGauge(Turn turn, TurnStatus prevStatus)
+    //{
+    //    if (prevStatus == TurnStatus.WAITING && turn.Status == TurnStatus.PLAYING)
+    //    {
+    //        //PlayTurnGauageAnimation(turn.Period);
+    //    }
+    //    else if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.PAUSED)
+    //    {
+    //        StopTurnGaugeAnimation();
+    //    }
+    //    else if (prevStatus == TurnStatus.PAUSED && turn.Status == TurnStatus.PLAYING)
+    //    {
+    //        //PlayTurnGauageAnimation(turn.Period - turn.PlayTime);
+    //    }
+    //    else if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.WAITING)
+    //    {
+    //        ResetTurnGauge();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Invalid TurnStatus change : ScenarioPanel.cs - DealTurnGauge()");
+    //        Debug.LogError($"{prevStatus} -> {turn.Status}");
+    //    }
+    //}
 
-    public void PlayTurnGauageAnimation(float duration)
+    public void PlayTurnGauageAnimation()
     {
-        turnGauage.rectTransform.DOScaleX(9300f, duration).SetEase(Ease.Linear);
+        float duration = turnManager.NowTurn.Period - turnManager.NowTurn.PlayTime;
+        //Debug.Log($"play turn gauge : {duration}");
+
+        turnGauge.rectTransform.DOScaleX(9300f, duration).SetEase(Ease.Linear);
     }
 
     public void StopTurnGaugeAnimation()
     {
-        turnGauage.rectTransform.DOPause();
+        turnGauge.rectTransform.DOPause();
     }
 
     public void ResetTurnGauge()
     {
-        turnGauage.rectTransform.DOScaleX(1f, 0f);
+        //Debug.Log("reset turn gauge");
+        turnGauge.rectTransform.DOScaleX(1f, 0f);
     }
 
-    public void UpdateSlotObjectList(Turn turn)
+    private void UpdateSlotObjectList(List<ActionSlot> scenario)
     {
-        float slotWidth = (slotEndX - slotStartX - (turn.LockedIndex - 1) * slotOffset) / turn.LockedIndex;
+        float lockedIndex = gameManager.LockedIndex;
+        float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
 
         foreach (var slot in slotObjectList)
             Destroy(slot);
 
         slotObjectList = new List<GameObject>();
 
-        for (int i = 0; i < turn.LockedIndex; i++)
+        for (int i = 0; i < lockedIndex; i++)
         {
-            slotObjectList.Add(Instantiate(slotPrefabs[(int)turn.Scenario[i].PlacedAction.Type], scenarioTransform));
+            slotObjectList.Add(Instantiate(slotPrefabs[(int)scenario[i].PlacedAction.Type], scenarioTransform));
+            slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
+            slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
+        }
+    }
+
+    public void UpdateSlotObjectList(int lockedIndex, List<ActionSlot> scenario)
+    {
+        float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
+
+        foreach (var slot in slotObjectList)
+            Destroy(slot);
+
+        slotObjectList = new List<GameObject>();
+
+        for (int i = 0; i < lockedIndex; i++)
+        {
+            slotObjectList.Add(Instantiate(slotPrefabs[(int)scenario[i].PlacedAction.Type], scenarioTransform));
             slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
             slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
         }

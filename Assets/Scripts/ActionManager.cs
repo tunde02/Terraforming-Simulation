@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class ActionManager : MonoBehaviour
+public class ActionManager : BaseManager
 {
     [SerializeField] private GameObject scenarioDetailsCanvas;
     [SerializeField] private GameObject[] slotPrefabs;
@@ -34,7 +34,7 @@ public class ActionManager : MonoBehaviour
         this.uiManager = uiManager;
     }
 
-    void Awake()
+    public override void Initialize()
     {
         InitScenario();
         UpdateSlotWeights();
@@ -54,6 +54,8 @@ public class ActionManager : MonoBehaviour
             Scenario[i].IsEmpty = true;
             Scenario[i].IsLocked = true;
         }
+
+        //OnScenarioChanged(Scenario);
     }
 
     public void SavePrevScenario()

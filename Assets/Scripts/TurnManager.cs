@@ -6,12 +6,12 @@ using UnityEngine.UI;
 using Zenject;
 
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : BaseManager
 {
     public Turn NowTurn { get; set; }
     private GameManager gameManager;
     private ActionManager actionManager;
-    private float prevTime;
+    private bool isLoaded; // ProgressTurn() 대신 이거랑 Update() 같이 쓰는 것도 고려
 
 
     [Inject]
@@ -21,36 +21,37 @@ public class TurnManager : MonoBehaviour
         this.actionManager = actionManager;
     }
 
-    void Start()
+    public override void Initialize()
     {
-        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
-        Turn.OnTurnStatusChanged += ManageTurn;
+        InitTurn();
+
+        StartCoroutine(ProgressTurn());
+    }
+    
+    private void InitTurn()
+    {
+        NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+        Turn.OnTurnFinished += StartTurn;
     }
 
-    void Update()
+    private IEnumerator ProgressTurn()
     {
-        if (NowTurn.Status == TurnStatus.PLAYING)
+        while (true)
         {
-            NowTurn.PlayTime += Time.deltaTime;
-        }
-    }
+            if (NowTurn.Status == TurnStatus.PLAYING)
+            {
+                NowTurn.PlayTime += Time.deltaTime;
+            }
 
-    private void ManageTurn(Turn turn, TurnStatus prevStatus)
-    {
-        if (prevStatus == TurnStatus.PLAYING && turn.Status == TurnStatus.WAITING)
-        {
-            StartTurn();
+            yield return null;
         }
     }
 
     public void StartTurn()
     {
-        NowTurn = new Turn(gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD)
-        {
-            Status = TurnStatus.PLAYING
-        };
-
-        prevTime = Time.time;
+        //Debug.Log("start turn");
+        NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+        NowTurn.Status = TurnStatus.PLAYING;
     }
 
     public void PauseTurn()
@@ -67,7 +68,6 @@ public class TurnManager : MonoBehaviour
             return;
 
         NowTurn.Status = TurnStatus.PLAYING;
-        prevTime = Time.time;
     }
 
     //public void FinishTurn()

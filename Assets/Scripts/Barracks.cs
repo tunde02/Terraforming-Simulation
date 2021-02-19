@@ -57,6 +57,11 @@ public class Barracks : MonoBehaviour
 
     void Start()
     {
+        InitTargetBarracks();
+    }
+
+    private void InitTargetBarracks()
+    {
         TargetBarracks = battleManager.GetNextTargetBarracks(this);
     }
 

@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseManager
 {
+    [SerializeField] private BaseManager[] managers;
+
     [BoxGroup("Resources")] public long initialPopulationStorage;
     [BoxGroup("Resources")] public long initialFoodStorage;
     [BoxGroup("Resources")] public long initialDNAStorage;
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
     [BoxGroup("Monitoring")] public long nowPowerStorage;
     [BoxGroup("Monitoring")] public long nowPowerIncome;
 
+
     public List<Resource> Resources { get; set; }
     public string[] UNIT { get; } = { "", "k", "m", "g", "t", "p", "e" };
     public float TURNPERIOD { get; } = 10;
@@ -28,12 +31,19 @@ public class GameManager : MonoBehaviour
     public int LockedIndex { get; set; } = 10;
     
 
-    void Awake()
+    public override void Initialize()
     {
         InitResources();
     }
 
-    public void InitResources()
+    void Awake()
+    {
+        Initialize();
+
+        InitOtherManagers();
+    }
+
+    private void InitResources()
     {
         Resources = new List<Resource>(4)
         {
@@ -42,6 +52,14 @@ public class GameManager : MonoBehaviour
             new Resource(ResourceType.DNA, initialDNAStorage),
             new Resource(ResourceType.POWER, initialPowerStorage)
         };
+    }
+
+    private void InitOtherManagers()
+    {
+        foreach (var manager in managers)
+        {
+            manager.Initialize();
+        }
     }
 
     public void UpdateResources(List<Resource> resources)

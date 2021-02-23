@@ -31,6 +31,7 @@ public class TurnManager : BaseManager
     private void InitTurn()
     {
         NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+        Turn.OnTurnFinished += ReadyTurn;
         Turn.OnTurnFinished += StartTurn;
     }
 
@@ -47,10 +48,15 @@ public class TurnManager : BaseManager
         }
     }
 
+    public void ReadyTurn()
+    {
+        NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+    }
+
     public void StartTurn()
     {
         //Debug.Log("start turn");
-        NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+        //NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
         NowTurn.Status = TurnStatus.PLAYING;
     }
 

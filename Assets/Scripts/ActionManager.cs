@@ -23,15 +23,17 @@ public class ActionManager : BaseManager
     public List<ActionSlot> PrevScenario { get; private set; }
     private GameManager gameManager;
     private UIManager uiManager;
+    private TurnManager turnManager;
     private readonly double[] blockWeight = { 1.0, 1.1, 1.2 };
     private readonly int blockStackLimit = 2;
 
 
     [Inject]
-    public void Construct(GameManager gameManager, UIManager uiManager)
+    public void Construct(GameManager gameManager, UIManager uiManager, TurnManager turnManager)
     {
         this.gameManager = gameManager;
         this.uiManager = uiManager;
+        this.turnManager = turnManager;
     }
 
     public override void Initialize()
@@ -60,7 +62,12 @@ public class ActionManager : BaseManager
 
     public void SavePrevScenario()
     {
-        PrevScenario = Scenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked));
+        PrevScenario = Scenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked, slot.BlockWeight));
+
+        if (turnManager.NowTurn.Status == TurnStatus.WAITING)
+        {
+            turnManager.ReadyTurn();
+        }
     }
 
     public void InsertSlot(int index, int actionType)
@@ -83,7 +90,7 @@ public class ActionManager : BaseManager
 
     public void ResetScenario()
     {
-        Scenario = PrevScenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked));
+        Scenario = PrevScenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked, slot.BlockWeight));
 
         UpdateSlotWeights();
         OnScenarioChanged(Scenario);
@@ -120,6 +127,7 @@ public class ActionManager : BaseManager
 
     private void UpdateSlotWeights()
     {
+        //Debug.Log("update slot weights");
         int[] stacks = new int[gameManager.LockedIndex];
         ActionType nowAction, nextAction;
         int blockStack = 0;

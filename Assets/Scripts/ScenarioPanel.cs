@@ -44,8 +44,6 @@ public class ScenarioPanel : MonoBehaviour
 
     void Start()
     {
-        
-
         Turn.OnTurnStarted += PlayTurnGauageAnimation;
         Turn.OnTurnPaused += StopTurnGaugeAnimation;
         Turn.OnTurnResumed += PlayTurnGauageAnimation;
@@ -53,22 +51,22 @@ public class ScenarioPanel : MonoBehaviour
         //InitSlotList();
     }
 
-    private void InitSlotList()
-    {
-        // 필요없을듯
+    //private void InitSlotList()
+    //{
+    //    // 필요없을듯
 
-        int lockedIndex = gameManager.LockedIndex;
-        float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
+    //    int lockedIndex = gameManager.LockedIndex;
+    //    float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
 
-        slotObjectList = new List<GameObject>();
+    //    slotObjectList = new List<GameObject>();
 
-        for (int i = 0; i < lockedIndex; i++)
-        {
-            slotObjectList.Add(Instantiate(slotPrefabs[4], scenarioTransform));
-            slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
-            slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
-        }
-    }
+    //    for (int i = 0; i < lockedIndex; i++)
+    //    {
+    //        slotObjectList.Add(Instantiate(slotPrefabs[4], scenarioTransform));
+    //        slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
+    //        slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
+    //    }
+    //}
 
     //private void DealTurnGauge(Turn turn, TurnStatus prevStatus)
     //{
@@ -114,23 +112,23 @@ public class ScenarioPanel : MonoBehaviour
         turnGauge.rectTransform.DOScaleX(1f, 0f);
     }
 
-    private void UpdateSlotObjectList(List<ActionSlot> scenario)
-    {
-        float lockedIndex = gameManager.LockedIndex;
-        float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
+    //private void UpdateSlotObjectList(List<ActionSlot> scenario)
+    //{
+    //    float lockedIndex = gameManager.LockedIndex;
+    //    float slotWidth = (slotEndX - slotStartX - (lockedIndex - 1) * slotOffset) / lockedIndex;
 
-        foreach (var slot in slotObjectList)
-            Destroy(slot);
+    //    foreach (var slot in slotObjectList)
+    //        Destroy(slot);
 
-        slotObjectList = new List<GameObject>();
+    //    slotObjectList = new List<GameObject>();
 
-        for (int i = 0; i < lockedIndex; i++)
-        {
-            slotObjectList.Add(Instantiate(slotPrefabs[(int)scenario[i].PlacedAction.Type], scenarioTransform));
-            slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
-            slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
-        }
-    }
+    //    for (int i = 0; i < lockedIndex; i++)
+    //    {
+    //        slotObjectList.Add(Instantiate(slotPrefabs[(int)scenario[i].PlacedAction.Type], scenarioTransform));
+    //        slotObjectList[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(slotStartX + slotWidth / 2 + i * (slotWidth + slotOffset), slotY);
+    //        slotObjectList[i].GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth, slotHeight);
+    //    }
+    //}
 
     public void UpdateSlotObjectList(int lockedIndex, List<ActionSlot> scenario)
     {

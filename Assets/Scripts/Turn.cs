@@ -67,7 +67,7 @@ public class Turn
             playtime = value;
 
             if (IsEnoughPlayTime())
-                Scenario[NowSlotIndex++].PlacedAction.PerformAction(ResultResources);
+                Scenario[NowSlotIndex].PlacedAction.PerformAction(ResultResources, Scenario[NowSlotIndex++].BlockWeight);
         }
     }
     private int nowSlotIndex = 0;
@@ -95,7 +95,7 @@ public class Turn
         this.status = status;
         StartingResources = resources.ConvertAll(resource => new Resource(resource.Type, resource.Storage));
         ResultResources = resources;
-        Scenario = scenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked));
+        Scenario = scenario.ConvertAll(slot => new ActionSlot(slot.PlacedAction, slot.IsEmpty, slot.IsLocked, slot.BlockWeight));
         LockedIndex = lockedIndex;
         Period = period;
         PlayTime = 0f;

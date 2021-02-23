@@ -24,10 +24,11 @@ public class ActionSlot
         IsLocked = false;
     }
 
-    public ActionSlot(Action action, bool isEmpty, bool isLocked)
+    public ActionSlot(Action action, bool isEmpty, bool isLocked, double blockWeight)
     {
         PlacedAction = action;
         IsEmpty = isEmpty;
         IsLocked = isLocked;
+        BlockWeight = blockWeight;
     }
 }

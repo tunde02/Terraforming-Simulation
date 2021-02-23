@@ -39,9 +39,9 @@ public class Action
         Weight = 1.0;
     }
 
-    public void PerformAction(List<Resource> resources)
+    public void PerformAction(List<Resource> resources, double blockWeight = 1.0f)
     {
-        long actualIncome = (long)(Income * Weight);
+        long actualIncome = (long)(Income * Weight * blockWeight);
         Resource consumedResource = null;
         Resource producedResource = null;
 

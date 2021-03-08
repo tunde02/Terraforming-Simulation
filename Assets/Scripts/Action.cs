@@ -9,7 +9,7 @@ public class Action
 {
     public ActionType Type { get; }
     public long Income { get; set; }
-    public double Weight { get; set; }
+    public List<double> Weights { get; private set; }
     public long Consumption { get; set; }
 
     public Action(ActionType type)
@@ -36,14 +36,19 @@ public class Action
                 break;
         }
 
-        Weight = 1.0;
+        Weights = new List<double> {
+            1.0
+        };
     }
 
     public void PerformAction(List<Resource> resources, double blockWeight = 1.0f)
     {
-        long actualIncome = (long)(Income * Weight * blockWeight);
         Resource consumedResource = null;
         Resource producedResource = null;
+        long actualIncome = Income;
+        foreach (double weight in Weights)
+            actualIncome = (long)(actualIncome * weight);
+        actualIncome = (long)(actualIncome * blockWeight);
 
         switch (Type)
         {

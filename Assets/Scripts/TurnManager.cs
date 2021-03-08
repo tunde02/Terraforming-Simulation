@@ -9,6 +9,7 @@ using Zenject;
 public class TurnManager : BaseManager
 {
     public Turn NowTurn { get; set; }
+    public int TurnNumber { get; set; } = 0;
     private GameManager gameManager;
     private ActionManager actionManager;
     private bool isLoaded; // ProgressTurn() 대신 이거랑 Update() 같이 쓰는 것도 고려
@@ -31,6 +32,8 @@ public class TurnManager : BaseManager
     private void InitTurn()
     {
         NowTurn = new Turn(TurnStatus.WAITING, gameManager.Resources, actionManager.Scenario, gameManager.LockedIndex, gameManager.TURNPERIOD);
+
+        Turn.OnTurnFinished += IncreaseTurnNumber;
         Turn.OnTurnFinished += ReadyTurn;
         Turn.OnTurnFinished += StartTurn;
     }
@@ -74,6 +77,11 @@ public class TurnManager : BaseManager
             return;
 
         NowTurn.Status = TurnStatus.PLAYING;
+    }
+
+    private void IncreaseTurnNumber()
+    {
+        TurnNumber++;
     }
 
     //public void FinishTurn()

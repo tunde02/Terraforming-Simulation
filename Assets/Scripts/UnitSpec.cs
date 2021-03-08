@@ -10,7 +10,7 @@ public class UnitSpec
 {
     public Faction BelongedFaction { get; set; }
     public int Hp { get; set; }
-    public int AttackPower;
+    public int AttackPower { get; set; }
     public int DefensePower { get; set; }
     public float Speed { get; set; }
     public int UnitSize { get; set; }

@@ -223,7 +223,7 @@ public class ScenarioDetailsPanel : MonoBehaviour
 
             var placedAction = scenario[i].PlacedAction;
 
-            changes[(int)placedAction.Type] += (long)(placedAction.Income * scenario[i].BlockWeight);
+            changes[(int)placedAction.Type] += (long)(placedAction.ActualIncome * scenario[i].BlockWeight);
             changes[0] -= placedAction.Consumption;
         }
 

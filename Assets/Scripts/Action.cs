@@ -9,6 +9,16 @@ public class Action
 {
     public ActionType Type { get; }
     public long Income { get; set; }
+    public long ActualIncome
+    {
+        get
+        {
+            long actualIncome = Income;
+            foreach (double weight in Weights)
+                actualIncome = (long)(actualIncome * weight);
+            return actualIncome;
+        }
+    }
     public List<double> Weights { get; private set; }
     public long Consumption { get; set; }
 

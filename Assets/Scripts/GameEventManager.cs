@@ -22,10 +22,13 @@ public class GameEventManager : BaseManager
 
     public override void Initialize()
     {
-        EventList = new List<GameEvent> {
-            new GameEvent(GameEventType.Spring)
-        };
-        //EventList = new List<GameEvent>();
+        EventList = new List<GameEvent>();
+        GameEvent newEvent = new GameEvent(GameEventType.Spring);
+        //EventList = new List<GameEvent> {
+        //    new GameEvent(GameEventType.Spring)
+        //};
+        EventList.Add(newEvent);
+        StartGameEvent(newEvent);
 
         Turn.OnTurnFinished += ProceedGameEvent;
         Turn.OnTurnFinished += GenerateGameEvent;
@@ -56,16 +59,16 @@ public class GameEventManager : BaseManager
             switch (seasonNumber)
             {
                 case 0:
-                    EventList.Add(new GameEvent(GameEventType.Spring));
+                    AddNewGameEvent(GameEventType.Spring);
                     break;
                 case 1:
-                    EventList.Add(new GameEvent(GameEventType.Summer));
+                    AddNewGameEvent(GameEventType.Summer);
                     break;
                 case 2:
-                    EventList.Add(new GameEvent(GameEventType.Autumn));
+                    AddNewGameEvent(GameEventType.Autumn);
                     break;
                 case 3:
-                    EventList.Add(new GameEvent(GameEventType.Winter));
+                    AddNewGameEvent(GameEventType.Winter);
                     break;
             }
 
@@ -75,7 +78,7 @@ public class GameEventManager : BaseManager
         // NaturalDisasters
         if (turnNumber % 10 == 0 && r.Next(0, 10) == 0) // 10%
         {
-            EventList.Add(new GameEvent(GameEventType.NaturalDisasters));
+            AddNewGameEvent(GameEventType.NaturalDisasters);
         }
 
         // GoldenAge
@@ -84,18 +87,26 @@ public class GameEventManager : BaseManager
         // GenerationChange
         if (turnNumber % 20 == 0)
         {
-            EventList.Add(new GameEvent(GameEventType.GenerationChange));
+            AddNewGameEvent(GameEventType.GenerationChange);
 
             // ExtraordinaryLeader
             if (r.Next(0, 10) <= 2) // 30%
             {
-                EventList.Add(new GameEvent(GameEventType.ExtraordinaryLeader));
+                AddNewGameEvent(GameEventType.ExtraordinaryLeader);
             }
         }
 
         // War
 
         // MilitaryDodge
+    }
+
+    private void AddNewGameEvent(GameEventType newEventType)
+    {
+        Debug.Log($"Add New GameEvent : {newEventType}");
+        GameEvent newEvent = new GameEvent(newEventType);
+        EventList.Add(newEvent);
+        StartGameEvent(newEvent);
     }
 
     private void ProceedGameEvent()
@@ -119,7 +130,7 @@ public class GameEventManager : BaseManager
 
     private void StartGameEvent(GameEvent targetEvent)
     {
-        // TODO:
+        Debug.Log($"Start GameEvent : {targetEvent.EventType}");
         actionManager.ACTION[0].Weights.Add(targetEvent.ActionWeights[0]);
         actionManager.ACTION[1].Weights.Add(targetEvent.ActionWeights[1]);
         actionManager.ACTION[2].Weights.Add(targetEvent.ActionWeights[2]);
@@ -128,6 +139,7 @@ public class GameEventManager : BaseManager
 
     private void EndGameEvent(GameEvent targetEvent)
     {
+        Debug.Log($"End GameEvent : {targetEvent.EventType}");
         actionManager.ACTION[0].Weights.Remove(targetEvent.ActionWeights[0]);
         actionManager.ACTION[1].Weights.Remove(targetEvent.ActionWeights[1]);
         actionManager.ACTION[2].Weights.Remove(targetEvent.ActionWeights[2]);
